@@ -1,8 +1,11 @@
 from datetime import datetime
 from enum import Enum
-from typing import List, Optional
+from typing import Dict, List, Optional
+from uuid import UUID
 
 from pydantic import BaseModel
+
+from serenity_types.refdata.options import OptionType
 
 
 class VolModel(Enum):
@@ -90,14 +93,9 @@ class VolPoint:
     An individual IV input point.
     """
 
-    maturity: Optional[str]
+    option_asset_id: UUID
     """
-    A relative date code, e.g. 1Y or 3M.
-    """
-
-    expiry: Optional[datetime]
-    """
-    The specific expiry for the option that was the input for this vol point.
+    The specific option that was used for vol fitting purposes.
     """
 
     time_to_expiry: Optional[float]
@@ -110,6 +108,16 @@ class VolPoint:
     The observed option premium used as input to the IV calculation.
     """
 
+    rates: Dict[UUID, float]
+    """
+    The observed discounting rates that went into the IV calculations.
+    """
+
+    forward_price: float
+    """
+    The observed or calculated forward price that went into the IV calculation.
+    """
+
     iv: float
     """
     The computed implied volatility (IV) that corresponds to the given mark_price and other inputs.
@@ -117,16 +125,41 @@ class VolPoint:
 
 
 class RawVolatilitySurface(VolatilitySurface):
+    spot_price: float
+    """
+    The observed spot price that went into the IV calculations.
+    """
+
     vol_points: List[VolPoint]
+    """
+    The discrete IV points available for fitting as a volatility surface.
+    """
 
 
 class FittedVolatilitySurface(VolatilitySurface):
     """
-    A calibrated volatility surface with a dense grid of implied vols. Each array
+    A calibrated volatility surface with a dense grid of fitted vols. Each array
     is of equal length and corresponds to (x, y, z) for the mesh.
     """
-    strikes: List[float]
 
-    time_to_maturities: List[float]
+    strikes: List[float]
+    """
+    All strikes expressed as log-money values, the x-axis in the mesh.
+    """
+
+    time_to_expiries: List[float]
+    """
+    All times to expiry expressed as year fractions, the y-axis in the mesh.
+    """
 
     vols: List[float]
+    """
+    All fitted vols, the z-axis in the mesh.
+    """
+
+    option_types: Optional[List[OptionType]]
+    """
+    Due to dirty data on Deribit, our calibration fits separately for PUT and CALL options.
+    To allow pricing of either option type, the fitted surface returns both. This array
+    tells you the type for the corresponding fitted volatility in the vols array.
+    """

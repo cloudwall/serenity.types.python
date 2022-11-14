@@ -82,6 +82,11 @@ class OptionValuation(BaseModel):
     The variety of option being priced.
     """
 
+    contract_size: float
+    """
+    For scaling purposes, the # of underlying per contract.
+    """
+
     implied_vol_override: Optional[float]
     """
     Substitute a fixed IV when pricing this option, and ignore the volatility surface.
@@ -203,7 +208,7 @@ class OptionValuationResult(BaseModel):
 
     spot_notional: float
     """
-    Number of contracts (qty) times the spot_price.
+    The base currency notional of the position: number of contracts (qty) X  spot_price X contract_size.
     """
 
     spot_price: float
@@ -226,9 +231,13 @@ class OptionValuationResult(BaseModel):
     Greek output: delta, the option's sensitivity to spot changes.
     """
 
+    delta_qty: float
+    """
+    """
+
     delta_ccy: float
     """
-    Delta notional, expressed in base currency.
+    Delta X spot notional, expressed in base currency.
     """
 
     gamma: float
@@ -238,7 +247,7 @@ class OptionValuationResult(BaseModel):
 
     gamma_ccy: float
     """
-    Gamma notional, expressed in base currency.
+    Gamma X spot notional, expressed in base currency.
     """
 
     vega: float
@@ -248,7 +257,7 @@ class OptionValuationResult(BaseModel):
 
     vega_ccy: float
     """
-    Vega notional, expressed in base currency.
+    Vega X spot notional, expressed in base currency.
     """
 
     rho: float
@@ -258,7 +267,7 @@ class OptionValuationResult(BaseModel):
 
     rho_ccy: float
     """
-    Rho notional, expressed in base currency.
+    Rho X spot notional, expressed in base currency.
     """
 
     theta: float
@@ -266,7 +275,7 @@ class OptionValuationResult(BaseModel):
     Greek output: theta, the delta's sensitivity to time decay.
     """
 
-    rho_ccy: float
+    theta_ccy: float
     """
-    Rho notional, expressed in base currency.
+    Theta X spot_notional, expressed in base currency.
     """
