@@ -233,6 +233,7 @@ class OptionValuationResult(BaseModel):
 
     delta_qty: float
     """
+    Delta X qty X contract_size, the delta exposure expressed in qty of underlying.
     """
 
     delta_ccy: float
