@@ -126,7 +126,7 @@ class VolPoint:
 
     rates: Optional[Dict[UUID, float]]
     """
-    The observed discounting rates that went into the IV calculations, if  any.
+    The observed discounting rates that went into the IV calculations, if any.
     """
 
     forward_price: float
