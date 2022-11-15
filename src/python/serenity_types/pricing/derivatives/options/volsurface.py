@@ -34,9 +34,9 @@ class VolSurfaceType(Enum):
     A volatility surface containing the raw inputs: the option prices, IV's, etc..
     """
 
-    FITTED = "FITTED"
+    INTERPOLATED = "INTERPOLATED"
     """
-    A calibrated and fitted volatility surface with a dense grid of IV's.
+    A calibrated volatility surface with a dense grid of IV's.
     """
 
 
@@ -61,9 +61,15 @@ class VolatilitySurface(BaseModel):
     Base type for both RAW and INTERPOLATED yield curve representations: a term structure.
     """
 
-    display_name: str
+    vol_surface_id: UUID
     """
-    Human-readable descrition of this curve, e.g. OIS (RAW) or OIS (Interpolated, FLAT_FWD)
+    Unique ID for this volatility surface's collection of attributes; note that surfaces
+    are re-fitted hourly, and so there are going to be many versions over time.
+    """
+
+    vol_surface_type: VolSurfaceType
+    """
+    Whether this surface is raw input points or interpolated.
     """
 
     vol_model: VolModel
@@ -74,6 +80,16 @@ class VolatilitySurface(BaseModel):
     strike_type: StrikeType
     """
     Strike representation used for this surface, e.g. ABSOLUTE or LOG_MONEYNESS.
+    """
+
+    underlier_asset_id: UUID
+    """
+    The linked asset for this surface, e.g. for a Bitcoin volatility surface, this is BTC.
+    """
+
+    display_name: str
+    """
+    Human-readable descrition of this curve, e.g. OIS (RAW) or OIS (Interpolated, FLAT_FWD)
     """
 
     as_of_time: datetime
@@ -98,7 +114,7 @@ class VolPoint:
     The specific option that was used for vol fitting purposes.
     """
 
-    time_to_expiry: Optional[float]
+    time_to_expiry: float
     """
     The time to expiry for this point, expressed as a year fraction.
     """
@@ -108,9 +124,9 @@ class VolPoint:
     The observed option premium used as input to the IV calculation.
     """
 
-    rates: Dict[UUID, float]
+    rates: Optional[Dict[UUID, float]]
     """
-    The observed discounting rates that went into the IV calculations.
+    The observed discounting rates that went into the IV calculations, if  any.
     """
 
     forward_price: float
@@ -157,7 +173,7 @@ class FittedVolatilitySurface(VolatilitySurface):
     All fitted vols, the z-axis in the mesh.
     """
 
-    option_types: Optional[List[OptionType]]
+    option_types: List[OptionType]
     """
     Due to dirty data on Deribit, our calibration fits separately for PUT and CALL options.
     To allow pricing of either option type, the fitted surface returns both. This array
