@@ -56,9 +56,9 @@ class StrikeType(Enum):
     """
 
 
-class VolatilitySurface(BaseModel):
+class VolatilitySurfaceDefinition(BaseModel):
     """
-    Base type for both RAW and INTERPOLATED yield curve representations: a term structure.
+    A uniquely-identified set of VS parameters for fitting a VolatilitySurface.
     """
 
     vol_surface_id: UUID
@@ -92,15 +92,20 @@ class VolatilitySurface(BaseModel):
     Human-readable descrition of this curve, e.g. OIS (RAW) or OIS (Interpolated, FLAT_FWD)
     """
 
-    as_of_time: datetime
+
+class VolatilitySurfaceAvailability(BaseModel):
     """
-    The time window, generally top of the hour, for which we have bootstrapped this yield curve; latest prices
-    as of this time are used as input to the surface calibration.
+    Information about version availability for a given volsurface definition.
     """
 
-    build_time: datetime
+    vol_surface_definition: VolatilitySurfaceDefinition
     """
-    The actual time of the build; due to DQ or system issues this might be different from as_of_time.
+    Description of the particular volsurface parameters that are available to load.
+    """
+
+    build_times: List[datetime]
+    """
+    The list of all available build times in the requested window.
     """
 
 
@@ -140,7 +145,7 @@ class VolPoint(BaseModel):
     """
 
 
-class RawVolatilitySurface(VolatilitySurface):
+class RawVolatilitySurface(BaseModel):
     spot_price: float
     """
     The observed spot price that went into the IV calculations.
@@ -152,7 +157,7 @@ class RawVolatilitySurface(VolatilitySurface):
     """
 
 
-class FittedVolatilitySurface(VolatilitySurface):
+class InterpolatedVolatilitySurface(BaseModel):
     """
     A calibrated volatility surface with a dense grid of fitted vols. Each array
     is of equal length and corresponds to (x, y, z) for the mesh.
@@ -178,4 +183,35 @@ class FittedVolatilitySurface(VolatilitySurface):
     Due to dirty data on Deribit, our calibration fits separately for PUT and CALL options.
     To allow pricing of either option type, the fitted surface returns both. This array
     tells you the type for the corresponding fitted volatility in the vols array.
+    """
+
+
+class VolatilitySurfaceVersion(BaseModel):
+    """
+    """
+
+    vol_surface_definition: VolatilitySurfaceDefinition
+    """
+    The unique set of parameters used to calibrate / fit this version.
+    """
+
+    raw: RawVolatilitySurface
+    """
+    The raw volatility surface inputs.
+    """
+
+    interpolated: InterpolatedVolatilitySurface
+    """
+    The interpolated volatility surface.
+    """
+
+    as_of_time: datetime
+    """
+    The time window, generally top of the hour, for which we have fitted the volatility surface; latest prices
+    as of this time are used as input to the surface calibration.
+    """
+
+    build_time: datetime
+    """
+    The actual time of the build; due to DQ or system issues this might be different from as_of_time.
     """

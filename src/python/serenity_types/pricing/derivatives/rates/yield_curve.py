@@ -6,22 +6,6 @@ from uuid import UUID
 from pydantic import BaseModel
 
 
-class CurveType(Enum):
-    """
-    Varieties of yield curves supported.
-    """
-
-    RAW = "RAW"
-    """
-    Raw inputs, e.g. rates or prices.
-    """
-
-    INTERPOLATED = "INTERPOLATED"
-    """
-    Interpolated curve, with intermediate points filled in.
-    """
-
-
 class CurveUsage(Enum):
     """
     Intended usage of this curve, e.g. for discounting or for projection purposes.
@@ -142,20 +126,15 @@ class CurvePoint(BaseModel):
     """
 
 
-class YieldCurve(BaseModel):
+class YieldCurveDefinition(BaseModel):
     """
-    Base type for both RAW and INTERPOLATED yield curve representations: a term structure.
+    A uniquely-identified set of YC parameters for bootstrapping a YieldCurve.
     """
 
     yield_curve_id: UUID
     """
     Unique ID for this particular combination of yield curve attributes; note yield curves are
     bootstrapped daily, and so there are going to be many versions over time.
-    """
-
-    curve_type: CurveType
-    """
-    Whether this curve is raw input points or interpolated.
     """
 
     curve_usage: CurveUsage
@@ -173,19 +152,24 @@ class YieldCurve(BaseModel):
     Human-readable descrition of this curve, e.g. OIS (RAW) or OIS (Interpolated, FLAT_FWD)
     """
 
-    as_of_time: datetime
+
+class YieldCurveAvailability(BaseModel):
     """
-    The time window, generally UTC midnight, for which we have bootstrapped this yield curve; latest rates / input
-    prices as of this time are used.
+    Information about version availability for a given YC definition.
     """
 
-    build_time: datetime
+    yield_curve_definition: YieldCurveDefinition
     """
-    The actual time of the build; due to DQ or system issues this might be different from as_of_time.
+    Description of the particular yield curve parameters that are available to load.
+    """
+
+    build_times: List[datetime]
+    """
+    The list of all available build times in the requested window.
     """
 
 
-class RawYieldCurve(YieldCurve):
+class RawYieldCurve(BaseModel):
     """
     A term structure of yield curve inputs. The RAW representation is offered to clients so they
     can either do their own interpolation or for diagnostics.
@@ -193,7 +177,7 @@ class RawYieldCurve(YieldCurve):
     points: List[CurvePoint]
 
 
-class InterpolatedYieldCurve(YieldCurve):
+class InterpolatedYieldCurve(BaseModel):
     """
     A term structure of rates and discount factors built from a RAW representation. This is the version
     that you should pass in for option valuation purposes, and is suitable for extracting rates and discount
@@ -223,4 +207,36 @@ class InterpolatedYieldCurve(YieldCurve):
     discount_factors: List[float]
     """
     Array of all discount factors (DF's) along the curve.
+    """
+
+
+class YieldCurveVersion(BaseModel):
+    """
+    A single version of a YieldCurveDefinition, inclusive of its
+    """
+
+    yield_curve_definition: YieldCurveDefinition
+    """
+    The unique set of parameters used to bootstrap this version.
+    """
+
+    raw: RawYieldCurve
+    """
+    The raw yield curve input.
+    """
+
+    interpolated: InterpolatedYieldCurve
+    """
+    The bootstrapped yield curve
+    """
+
+    as_of_time: datetime
+    """
+    The time window, generally UTC midnight, for which we have bootstrapped this yield curve; latest rates / input
+    prices as of this time are used.
+    """
+
+    build_time: datetime
+    """
+    The actual time of the build; due to DQ or system issues this might be different from as_of_time.
     """
