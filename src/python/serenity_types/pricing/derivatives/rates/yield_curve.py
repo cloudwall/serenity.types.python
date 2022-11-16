@@ -174,6 +174,12 @@ class RawYieldCurve(BaseModel):
     A term structure of yield curve inputs. The RAW representation is offered to clients so they
     can either do their own interpolation or for diagnostics.
     """
+    
+    definition: YieldCurveDefinition
+    """
+    The unique set of parameters used to bootstrap this yield curve.
+    """
+    
     points: List[CurvePoint]
 
 

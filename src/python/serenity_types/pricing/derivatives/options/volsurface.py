@@ -125,6 +125,11 @@ class VolPoint(BaseModel):
 
 
 class RawVolatilitySurface(BaseModel):
+    definition: VolatilitySurfaceDefinition
+    """
+    The unique set of parameters used to calibrate / fit this surface.
+    """
+    
     spot_price: float
     """
     The observed spot price that went into the IV calculations.
