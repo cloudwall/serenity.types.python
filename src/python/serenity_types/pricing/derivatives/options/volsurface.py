@@ -104,7 +104,7 @@ class VolatilitySurface(BaseModel):
     """
 
 
-class VolPoint:
+class VolPoint(BaseModel):
     """
     An individual IV input point.
     """
