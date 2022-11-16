@@ -58,7 +58,7 @@ class StrikeType(Enum):
 
 class VolatilitySurfaceDefinition(BaseModel):
     """
-    Base type for both RAW and INTERPOLATED yield curve representations: a term structure.
+    A uniquely-identified set of VS parameters for fitting a VolatilitySurface.
     """
 
     vol_surface_id: UUID
@@ -98,9 +98,9 @@ class VolatilitySurfaceAvailability(BaseModel):
     Information about version availability for a given volsurface definition.
     """
 
-    yield_curve_definition: VolatilitySurfaceDefinition
+    vol_surface_definition: VolatilitySurfaceDefinition
     """
-    Description of the particular yield curve parameters that are available to load.
+    Description of the particular volsurface parameters that are available to load.
     """
 
     build_times: List[datetime]
@@ -207,7 +207,7 @@ class VolatilitySurfaceVersion(BaseModel):
 
     as_of_time: datetime
     """
-    The time window, generally top of the hour, for which we have bootstrapped this yield curve; latest prices
+    The time window, generally top of the hour, for which we have fitted the volatility surface; latest prices
     as of this time are used as input to the surface calibration.
     """
 
