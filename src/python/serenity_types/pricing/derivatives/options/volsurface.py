@@ -68,7 +68,7 @@ class VolatilitySurfaceDefinition(BaseModel):
 
     display_name: str
     """
-    Human-readable descrition of this curve, e.g. OIS (RAW) or OIS (Interpolated, FLAT_FWD)
+    Human-readable description of this curve, e.g. Vol Surface - BTC - SVI ABSOLUTE - deribit
     """
 
 
