@@ -5,8 +5,8 @@ from uuid import UUID
 
 from pydantic import BaseModel
 
-from serenity_types.pricing.derivatives.options.volsurface import FittedVolatilitySurface, VolModel
-from serenity_types.pricing.derivatives.rates.yield_curve import YieldCurve
+from serenity_types.pricing.derivatives.options.volsurface import InterpolatedVolatilitySurface, VolModel
+from serenity_types.pricing.derivatives.rates.yield_curve import InterpolatedYieldCurve
 from serenity_types.refdata.options import OptionStyle, OptionType
 
 
@@ -161,7 +161,7 @@ class OptionValuationRequest(BaseModel):
     The optional unique ID of the surface to load, latest version as-of the as_of_time.
     """
 
-    vol_surface: Optional[FittedVolatilitySurface]
+    vol_surface: Optional[InterpolatedVolatilitySurface]
     """
     The optional client-provided volatility surface to use. If the client provides neither a VS ID
     nor their own volatility surface, the system will load the default for the underlying as-of the as_of_time.
@@ -172,7 +172,7 @@ class OptionValuationRequest(BaseModel):
     The optional unique ID of the yield curves to load per asset, latest version as-of the as_of_time.
     """
 
-    yield_curves: Optional[Dict[UUID, YieldCurve]]
+    yield_curves: Optional[Dict[UUID, InterpolatedYieldCurve]]
     """
     The optional client-provided yield curves to use per asset. If the client provides neither a YC ID
     nor their own yield curve for any given asset, the system will load the default as-of the as_of_time.

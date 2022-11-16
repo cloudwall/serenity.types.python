@@ -158,7 +158,7 @@ class YieldCurveAvailability(BaseModel):
     Information about version availability for a given YC definition.
     """
 
-    yield_curve_definition: YieldCurveDefinition
+    definition: YieldCurveDefinition
     """
     Description of the particular yield curve parameters that are available to load.
     """
@@ -182,6 +182,11 @@ class InterpolatedYieldCurve(BaseModel):
     A term structure of rates and discount factors built from a RAW representation. This is the version
     that you should pass in for option valuation purposes, and is suitable for extracting rates and discount
     factors as well as plotting purposes.
+    """
+
+    definition: YieldCurveDefinition
+    """
+    The unique set of parameters used to bootstrap this yield curve.
     """
 
     rate_source_types: List[RateSourceType]
@@ -212,12 +217,7 @@ class InterpolatedYieldCurve(BaseModel):
 
 class YieldCurveVersion(BaseModel):
     """
-    A single version of a YieldCurveDefinition, inclusive of its
-    """
-
-    yield_curve_definition: YieldCurveDefinition
-    """
-    The unique set of parameters used to bootstrap this version.
+    A single version of a YieldCurveDefinition, inclusive of its raw and interpolated YC content.
     """
 
     raw: RawYieldCurve
@@ -227,7 +227,7 @@ class YieldCurveVersion(BaseModel):
 
     interpolated: InterpolatedYieldCurve
     """
-    The bootstrapped yield curve
+    The bootstrapped yield curve.
     """
 
     as_of_time: datetime

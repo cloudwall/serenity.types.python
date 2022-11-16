@@ -24,22 +24,6 @@ class VolModel(Enum):
     """
 
 
-class VolSurfaceType(Enum):
-    """
-    Representation of the volatility surface, e.g. raw inputs vs. fitted surface.
-    """
-
-    RAW = "RAW"
-    """
-    A volatility surface containing the raw inputs: the option prices, IV's, etc..
-    """
-
-    INTERPOLATED = "INTERPOLATED"
-    """
-    A calibrated volatility surface with a dense grid of IV's.
-    """
-
-
 class StrikeType(Enum):
     """
     Currently supported strike representations.
@@ -65,11 +49,6 @@ class VolatilitySurfaceDefinition(BaseModel):
     """
     Unique ID for this volatility surface's collection of attributes; note that surfaces
     are re-fitted hourly, and so there are going to be many versions over time.
-    """
-
-    vol_surface_type: VolSurfaceType
-    """
-    Whether this surface is raw input points or interpolated.
     """
 
     vol_model: VolModel
@@ -98,7 +77,7 @@ class VolatilitySurfaceAvailability(BaseModel):
     Information about version availability for a given volsurface definition.
     """
 
-    vol_surface_definition: VolatilitySurfaceDefinition
+    definition: VolatilitySurfaceDefinition
     """
     Description of the particular volsurface parameters that are available to load.
     """
@@ -163,6 +142,11 @@ class InterpolatedVolatilitySurface(BaseModel):
     is of equal length and corresponds to (x, y, z) for the mesh.
     """
 
+    definition: VolatilitySurfaceDefinition
+    """
+    The unique set of parameters used to calibrate / fit this surface.
+    """
+
     strikes: List[float]
     """
     All strikes expressed as log-money values, the x-axis in the mesh.
@@ -188,11 +172,7 @@ class InterpolatedVolatilitySurface(BaseModel):
 
 class VolatilitySurfaceVersion(BaseModel):
     """
-    """
-
-    vol_surface_definition: VolatilitySurfaceDefinition
-    """
-    The unique set of parameters used to calibrate / fit this version.
+    A single version of a fitted volatility surface, with both the raw and interpolated content.
     """
 
     raw: RawVolatilitySurface
