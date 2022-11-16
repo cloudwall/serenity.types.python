@@ -22,6 +22,22 @@ class CurveType(Enum):
     """
 
 
+class CurveUsage(Enum):
+    """
+    Intended usage of this curve, e.g. for discounting or for projection purposes.
+    """
+
+    DISCOUNTING = "DISCOUNTING"
+    """
+    Curve points for discounting future cashflows.
+    """
+
+    PROJECTION = "PROJECTION"
+    """
+    Curve points indicating the market forward view.
+    """
+
+
 class RateSourceType(Enum):
     """
     Sources of rates & discount factors. In the most general case
@@ -129,6 +145,27 @@ class CurvePoint(BaseModel):
 class YieldCurve(BaseModel):
     """
     Base type for both RAW and INTERPOLATED yield curve representations: a term structure.
+    """
+
+    yield_curve_id: UUID
+    """
+    Unique ID for this particular combination of yield curve attributes; note yield curves are
+    bootstrapped daily, and so there are going to be many versions over time.
+    """
+
+    curve_type: CurveType
+    """
+    Whether this curve is raw input points or interpolated.
+    """
+
+    curve_usage: CurveUsage
+    """
+    The curve's intended purpose, e.g. for discounting or representing market view on forward rates.
+    """
+
+    underlier_asset_id: UUID
+    """
+    The linked asset for this curve, e.g. for an Ethereum staking curve, this would be ETH.
     """
 
     display_name: str
