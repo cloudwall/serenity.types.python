@@ -1,5 +1,5 @@
-serenity_sdk
-============
+serenity_types
+==============
 
 .. toctree::
    :maxdepth: 4
