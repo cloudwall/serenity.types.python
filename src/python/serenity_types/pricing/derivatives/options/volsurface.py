@@ -68,7 +68,7 @@ class VolatilitySurfaceDefinition(BaseModel):
 
     display_name: str
     """
-    Human-readable description of this curve, e.g. Vol Surface - BTC - SVI ABSOLUTE - deribit
+    Human-readable description of this curve, e.g. Deribit BTC (SVI, ABSOLUTE)
     """
 
 
