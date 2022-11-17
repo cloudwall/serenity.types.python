@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "serenity-types-python"
+name = "serenity.types.python"
 version = "0.0.0"
 authors = ["Cloudwall Support <support@cloudwall.tech>"]
 
