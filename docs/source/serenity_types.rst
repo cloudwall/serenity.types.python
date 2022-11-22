@@ -1,5 +1,5 @@
-serenity\_sdk package
-=====================
+serenity\_types package
+=======================
 
 Submodules
 ----------
