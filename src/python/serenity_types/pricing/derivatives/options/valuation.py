@@ -193,6 +193,7 @@ class OptionValuationRequest(BaseModel):
     individual overrides or bumps for all inputs as part of each valuation object.
     """
 
+
 class OptionValuationResult(BaseModel):
     """
     The result of a series of option valuations based on the parameters in the OptionValuationRequest.
