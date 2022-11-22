@@ -185,11 +185,11 @@ class RawYieldCurve(BaseModel):
     can either do their own interpolation or for diagnostics.
     """
 
-    curve_usage: CurveUsage
+    rate_source_types: List[RateSourceType]
     """
-    The curve's intended purpose, e.g. for discounting or representing market view on forward rates.
+    For reference purposes, the list of rate sources that were used to bootstrap this curve.
     """
-    
+
     points: List[CurvePoint]
 
 
