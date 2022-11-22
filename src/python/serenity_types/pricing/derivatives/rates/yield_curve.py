@@ -184,6 +184,12 @@ class RawYieldCurve(BaseModel):
     A term structure of yield curve inputs. The RAW representation is offered to clients so they
     can either do their own interpolation or for diagnostics.
     """
+
+    curve_usage: CurveUsage
+    """
+    The curve's intended purpose, e.g. for discounting or representing market view on forward rates.
+    """
+    
     points: List[CurvePoint]
 
 
