@@ -142,11 +142,6 @@ class YieldCurveDefinition(BaseModel):
     The curve's intended purpose, e.g. for discounting or representing market view on forward rates.
     """
 
-    rate_source_types: List[RateSourceType]
-    """
-    For reference purposes, the list of rate sources that were used to bootstrap this curve.
-    """
-
     interpolation_method: InterpolationMethod
     """
     The specific interpolator type used to bootstrap this curve.
@@ -185,12 +180,11 @@ class RawYieldCurve(BaseModel):
     can either do their own interpolation or for diagnostics.
     """
 
-    rate_source_types: List[RateSourceType]
-    """
-    For reference purposes, the list of rate sources that were used to bootstrap this curve.
-    """
-
     points: List[CurvePoint]
+    """
+    The list of market data observations that went into this raw yield curve, e.g. rates, discount factors
+    and futures prices corresponding to various tenors.
+    """
 
 
 class InterpolatedYieldCurve(BaseModel):
