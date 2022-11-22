@@ -1,11 +1,9 @@
 from datetime import datetime
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import AnyStr, Dict, List, Optional
 from uuid import UUID
 
 from pydantic import BaseModel
-
-from serenity_types.refdata.options import OptionType
 
 
 class VolModel(Enum):
@@ -36,7 +34,7 @@ class StrikeType(Enum):
 
     LOG_MONEYNESS = "LOG_MONEYNESS"
     """
-    Relative value of strike vs. current spot, with log transformation, e.g. 1.05
+    Relative value of strike vs. current spot with log transformation: log(strike / spot).
     """
 
 
@@ -162,11 +160,10 @@ class InterpolatedVolatilitySurface(BaseModel):
     All fitted vols, the z-axis in the mesh.
     """
 
-    option_types: List[OptionType]
+    calibration_params: Dict[AnyStr, AnyStr]
     """
-    Due to dirty data on Deribit, our calibration fits separately for PUT and CALL options.
-    To allow pricing of either option type, the fitted surface returns both. This array
-    tells you the type for the corresponding fitted volatility in the vols array.
+    Informational set of calibration paramters, e.g. the SVI parameters. May be empty and
+    keys will depend on the VolModel.
     """
 
 

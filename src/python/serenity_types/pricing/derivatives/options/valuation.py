@@ -45,9 +45,10 @@ class OptionValuation(BaseModel):
     with optionAssetId, by convention the unique ID or symbol of that option should be used.
     """
 
-    qty: int
+    qty: Optional[int]
     """
-    Number of option contracts; used when computing the spot notional of the option position.
+    Number of option contracts; used when computing the spot notional of the option position. Optional;
+    if not provided the various position value calculations will be skipped.
     """
 
     option_asset_id: Optional[UUID]
@@ -82,9 +83,10 @@ class OptionValuation(BaseModel):
     The variety of option being priced.
     """
 
-    contract_size: float
+    contract_size: Optional[float]
     """
-    For scaling purposes, the # of underlying per contract.
+    For scaling purposes, the # of underlying per contract. Optional;
+    if not provided the various position value calculations will be skipped.
     """
 
     implied_vol_override: Optional[float]
@@ -131,9 +133,11 @@ class OptionValuation(BaseModel):
 class OptionValuationRequest(BaseModel):
     """
     A batch request to run one or more option valuations using a single model configuration and base
-    set of curves and surfaces. Reasonable defaults will be provided for any missing inputs, e.g.
+    set of curves and the vol surface. Reasonable defaults will be provided for any missing inputs, e.g.
     if you price a set of Deribit BTC options, the latest BTC volatility surface will be used along with
-    the latest discounting curves for BTC and USD.
+    the latest discounting curves for BTC and USD. Note that because the request only references a single
+    volatility surface this means all included options must have the same underlier as the one in
+    VolatilitySurfaceVersion.interpolated.definition.underlier_asset_id.
     """
 
     as_of_time: datetime
@@ -200,6 +204,13 @@ class OptionValuationRequest(BaseModel):
 
 
 class OptionValuationResult(BaseModel):
+    """
+    The result of a series of option valuations based on the parameters in the OptionValuationRequest.
+    Note that the basic calculation is just Black-Scholes, but if you provide additional information
+    regarding the position scaling it will also provide position notional and greek exposures
+    in base currency to allow bucketing of greeks and NAV calculations.
+    """
+
     option_valuation_id: str
     """
     Correlation ID for the original OptionValuation.
@@ -220,7 +231,7 @@ class OptionValuationResult(BaseModel):
     Implied volatility (IV)
     """
 
-    spot_notional: float
+    position_value: Optional[float]
     """
     The base currency notional of the position: number of contracts (qty) X  spot_price X contract_size.
     """
@@ -252,7 +263,8 @@ class OptionValuationResult(BaseModel):
 
     delta_ccy: float
     """
-    Delta X spot notional, expressed in base currency.
+    Delta X value, a.k.a. the partial derivative of position value with respect to spot,
+    expressed in base currency
     """
 
     gamma: float
@@ -262,7 +274,8 @@ class OptionValuationResult(BaseModel):
 
     gamma_ccy: float
     """
-    Gamma X spot notional, expressed in base currency.
+    Gamma X value^2, a.k.a. the second derivative of position value with respect to spot,
+    expressed in base currency.
     """
 
     vega: float
@@ -272,7 +285,7 @@ class OptionValuationResult(BaseModel):
 
     vega_ccy: float
     """
-    Vega X spot notional, expressed in base currency.
+    Partial derivative of the position value of the contract with respect to vega X 1%, expressed in base currency.
     """
 
     rho: float
@@ -282,7 +295,7 @@ class OptionValuationResult(BaseModel):
 
     rho_ccy: float
     """
-    Rho X spot notional, expressed in base currency.
+    Partial derivative of the spot notional value of the contract with respect to rho X 1bp, expressed in base currency.
     """
 
     theta: float
@@ -292,5 +305,6 @@ class OptionValuationResult(BaseModel):
 
     theta_ccy: float
     """
-    Theta X spot_notional, expressed in base currency.
+    Partial derivative of the spot notional value of the contract with respect to theta X 1 day,
+    expressed in base currency.
     """
