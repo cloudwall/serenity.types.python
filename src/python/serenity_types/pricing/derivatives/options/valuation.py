@@ -231,7 +231,7 @@ class OptionValuationResult(BaseModel):
     Implied volatility (IV)
     """
 
-    position_value: Optional[float]
+    spot_notional: Optional[float]
     """
     The base currency notional of the position: number of contracts (qty) X  spot_price X contract_size.
     """
