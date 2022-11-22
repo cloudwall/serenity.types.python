@@ -3,7 +3,7 @@ from enum import Enum
 from typing import Dict, List, Optional
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 from serenity_types.pricing.derivatives.options.volsurface import InterpolatedVolatilitySurface, VolModel
 from serenity_types.pricing.derivatives.rates.yield_curve import InterpolatedYieldCurve
@@ -183,6 +183,20 @@ class OptionValuationRequest(BaseModel):
     The full set of option valuations to run with the given market data inputs. The client may provide
     individual overrides or bumps for all inputs as part of each valuation object.
     """
+
+    @validator('yield_curves', always=True)
+    def check_yield_curve_ids_or_yield_curves(cls, yield_curves, values):
+        if (values.get('yield_curve_ids') is None and yield_curves is None) or \
+           (values.get('yield_curve_ids') and yield_curves):
+            raise ValueError("Please specify one of 'yield_curve_ids' or 'yield_curves'")
+        return yield_curves
+
+    @validator('vol_surface', always=True)
+    def check_vol_surface_id_or_vol_surface(cls, vol_surface, values):
+        if (values.get('vol_surface_id') is None and vol_surface is None) or \
+           (values.get('vol_surface_id') and vol_surface):
+            raise ValueError("Please specify one of 'vol_surface_id' or 'vol_surface'")
+        return vol_surface
 
 
 class OptionValuationResult(BaseModel):
