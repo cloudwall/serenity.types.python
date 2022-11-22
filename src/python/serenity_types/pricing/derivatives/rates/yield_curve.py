@@ -142,6 +142,16 @@ class YieldCurveDefinition(BaseModel):
     The curve's intended purpose, e.g. for discounting or representing market view on forward rates.
     """
 
+    rate_source_types: List[RateSourceType]
+    """
+    For reference purposes, the list of rate sources that were used to bootstrap this curve.
+    """
+
+    interpolation_method: InterpolationMethod
+    """
+    The specific interpolator type used to bootstrap this curve.
+    """
+
     underlier_asset_id: UUID
     """
     The linked asset for this curve, e.g. for an Ethereum staking curve, this would be ETH.
@@ -187,16 +197,6 @@ class InterpolatedYieldCurve(BaseModel):
     definition: YieldCurveDefinition
     """
     The unique set of parameters used to bootstrap this yield curve.
-    """
-
-    rate_source_types: List[RateSourceType]
-    """
-    For reference purposes, the list of rate sources that were used to bootstrap this curve.
-    """
-
-    interpolation_method: InterpolationMethod
-    """
-    The specific interpolator type used to bootstrap this curve.
     """
 
     durations: List[float]
