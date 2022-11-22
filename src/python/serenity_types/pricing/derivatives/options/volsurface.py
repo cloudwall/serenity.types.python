@@ -100,7 +100,7 @@ class VolPoint(BaseModel):
     """
     The time to expiry for this point, expressed as a year fraction.
     """
-    
+
     strike_value: float
     """
     value of strike for this point, unit defined by StrikeType

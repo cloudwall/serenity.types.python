@@ -3,7 +3,7 @@ from enum import Enum
 from typing import Dict, List, Optional
 from uuid import UUID
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel
 
 from serenity_types.pricing.derivatives.options.volsurface import InterpolatedVolatilitySurface, VolModel
 from serenity_types.pricing.derivatives.rates.yield_curve import InterpolatedYieldCurve
@@ -192,8 +192,6 @@ class OptionValuationRequest(BaseModel):
     The full set of option valuations to run with the given market data inputs. The client may provide
     individual overrides or bumps for all inputs as part of each valuation object.
     """
-
-
 
 class OptionValuationResult(BaseModel):
     """
