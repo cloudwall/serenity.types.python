@@ -182,7 +182,7 @@ class OptionValuationRequest(BaseModel):
     nor their own yield curve for any given asset, the system will load the default as-of the as_of_time.
     """
 
-    vol_model: VolModel
+    vol_model: Optional[VolModel]
     """
     The volatility model used for evaluation purposes
     """
