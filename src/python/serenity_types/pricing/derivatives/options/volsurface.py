@@ -106,9 +106,9 @@ class VolatilitySurfaceAvailability(BaseModel):
     Description of the particular volsurface parameters that are available to load.
     """
 
-    build_times: List[datetime]
+    as_of_times: List[datetime]
     """
-    The list of all available build times in the requested window.
+    The list of all available as_of_times in the requested window.
     """
 
 
