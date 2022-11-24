@@ -147,6 +147,12 @@ class YieldCurveDefinition(BaseModel):
     The specific interpolator type used to bootstrap this curve.
     """
 
+    rate_source_type: RateSourceType
+    """
+    The type of input being provided for this CurvePoint, e.g. if it's from a 3M future,
+    this would be FUTURE_PX, while if it's from traditional rates fixings, it would be FIXINGS.
+    """
+
     underlier_asset_id: UUID
     """
     The linked asset for this curve, e.g. for an Ethereum staking curve, this would be ETH.
@@ -168,9 +174,9 @@ class YieldCurveAvailability(BaseModel):
     Description of the particular yield curve parameters that are available to load.
     """
 
-    build_times: List[datetime]
+    as_of_times: List[datetime]
     """
-    The list of all available build times in the requested window.
+    The list of all available as_of_times in the requested window.
     """
 
 

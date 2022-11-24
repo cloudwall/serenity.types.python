@@ -38,6 +38,27 @@ class StrikeType(Enum):
     """
 
 
+class DiscountingMethod(Enum):
+    """
+    In valuation, the strategy to use for getting the forward price for Black-Scholes.
+    """
+
+    CURVE = "CURVE"
+    """
+    Extract a discount factor from the yield curve provided and discount the spot price.
+    """
+
+    FUTURES = "FUTURES"
+    """
+    Use a futures price or its proxy as the forward price.
+    """
+
+    DISABLED = "DISABLED"
+    """
+    Assume a zero risk-free rate (Deribit approach)
+    """
+
+
 class VolatilitySurfaceDefinition(BaseModel):
     """
     A uniquely-identified set of VS parameters for fitting a VolatilitySurface.
@@ -57,6 +78,11 @@ class VolatilitySurfaceDefinition(BaseModel):
     strike_type: StrikeType
     """
     Strike representation used for this surface, e.g. ABSOLUTE or LOG_MONEYNESS.
+    """
+
+    discounting_method: DiscountingMethod
+    """
+    Discounting method used for this surface, e.g. CURVE or FUTURES or DISABLED.
     """
 
     underlier_asset_id: UUID
@@ -80,9 +106,9 @@ class VolatilitySurfaceAvailability(BaseModel):
     Description of the particular volsurface parameters that are available to load.
     """
 
-    build_times: List[datetime]
+    as_of_times: List[datetime]
     """
-    The list of all available build times in the requested window.
+    The list of all available as_of_times in the requested window.
     """
 
 
@@ -128,6 +154,11 @@ class VolPoint(BaseModel):
 
 
 class RawVolatilitySurface(BaseModel):
+    strike_type: StrikeType
+    """
+    Strike representation used for this surface, e.g. ABSOLUTE or LOG_MONEYNESS.
+    """
+
     spot_price: float
     """
     The observed spot price that went into the IV calculations.
