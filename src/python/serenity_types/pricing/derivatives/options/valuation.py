@@ -5,30 +5,11 @@ from uuid import UUID
 
 from pydantic import BaseModel
 
-from serenity_types.pricing.derivatives.options.volsurface import InterpolatedVolatilitySurface, VolModel
+from serenity_types.pricing.derivatives.options.volsurface import (
+    InterpolatedVolatilitySurface, VolModel, DiscountingMethod
+)
 from serenity_types.pricing.derivatives.rates.yield_curve import InterpolatedYieldCurve
 from serenity_types.refdata.options import OptionStyle, OptionType
-
-
-class DiscountingMethod(Enum):
-    """
-    In valuation, the strategy to use for getting the forward price for Black-Scholes.
-    """
-
-    CURVE = "CURVE"
-    """
-    Extract a discount factor from the yield curve provided and discount the spot price.
-    """
-
-    FUTURES = "FUTURES"
-    """
-    Use a futures price or its proxy as the forward price.
-    """
-
-    DISABLED = "DISABLED"
-    """
-    Assume a zero risk-free rate (Deribit approach)
-    """
 
 
 class OptionValuation(BaseModel):
