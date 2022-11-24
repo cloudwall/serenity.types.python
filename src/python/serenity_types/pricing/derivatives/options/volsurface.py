@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import AnyStr, Dict, List, Optional
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -129,7 +129,7 @@ class VolPoint(BaseModel):
 
     strike_value: float
     """
-    value of strike for this point, unit defined by StrikeType
+    Value of strike for this point, unit defined by StrikeType.
     """
 
     mark_price: float
@@ -196,9 +196,15 @@ class InterpolatedVolatilitySurface(BaseModel):
     All fitted vols, the z-axis in the mesh.
     """
 
-    calibration_params: Dict[float, Dict[str, float]]
+    input_params: Dict[AnyStr, object]
     """
-    Informational set of calibration paramters, e.g. the SVI parameters. May be empty and
+    Informational set of input parameters, e.g. yield curves used for the forward. May be empty
+    and keys will depend on the configuration, e.g. DiscountingType.
+    """
+
+    calibration_params: Dict[float, Dict[AnyStr, float]]
+    """
+    Informational set of calibration parameters, e.g. the SVI parameters. May be empty and
     keys will depend on the VolModel.
     """
 
