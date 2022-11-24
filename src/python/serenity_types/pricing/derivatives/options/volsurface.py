@@ -204,8 +204,8 @@ class InterpolatedVolatilitySurface(BaseModel):
 
     calibration_params: Dict[float, Dict[AnyStr, float]]
     """
-    Informational set of calibration parameters, e.g. the SVI parameters. May be empty and
-    keys will depend on the VolModel.
+    Informational set of calibration parameters, e.g. the SVI parameters. Keying is time_to_expiry
+    expressed in year fractions to parameter set, where the parameter keys are VolModel-specific.
     """
 
 
