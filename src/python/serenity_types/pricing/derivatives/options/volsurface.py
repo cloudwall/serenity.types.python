@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-from typing import AnyStr, Dict, List, Optional
+from typing import Dict, List, Optional
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -196,13 +196,13 @@ class InterpolatedVolatilitySurface(BaseModel):
     All fitted vols, the z-axis in the mesh.
     """
 
-    input_params: Dict[AnyStr, object]
+    input_params: Dict[str, object]
     """
     Informational set of input parameters, e.g. yield curves used for the forward. May be empty
     and keys will depend on the configuration, e.g. DiscountingType.
     """
 
-    calibration_params: Dict[float, Dict[AnyStr, float]]
+    calibration_params: Dict[float, Dict[str, float]]
     """
     Informational set of calibration parameters, e.g. the SVI parameters. Keying is time_to_expiry
     expressed in year fractions to parameter set, where the parameter keys are VolModel-specific.
