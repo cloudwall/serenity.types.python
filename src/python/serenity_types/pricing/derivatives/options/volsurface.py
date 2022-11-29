@@ -3,7 +3,7 @@ from enum import Enum
 from typing import Dict, List, Optional
 from uuid import UUID
 
-from pydantic import BaseModel
+from serenity_types.utils.serialization import CamelModel
 
 
 class VolModel(Enum):
@@ -59,7 +59,7 @@ class DiscountingMethod(Enum):
     """
 
 
-class VolatilitySurfaceDefinition(BaseModel):
+class VolatilitySurfaceDefinition(CamelModel):
     """
     A uniquely-identified set of VS parameters for fitting a VolatilitySurface.
     """
@@ -96,7 +96,7 @@ class VolatilitySurfaceDefinition(BaseModel):
     """
 
 
-class VolatilitySurfaceAvailability(BaseModel):
+class VolatilitySurfaceAvailability(CamelModel):
     """
     Information about version availability for a given volsurface definition.
     """
@@ -112,7 +112,7 @@ class VolatilitySurfaceAvailability(BaseModel):
     """
 
 
-class VolPoint(BaseModel):
+class VolPoint(CamelModel):
     """
     An individual IV input point.
     """
@@ -153,7 +153,7 @@ class VolPoint(BaseModel):
     """
 
 
-class RawVolatilitySurface(BaseModel):
+class RawVolatilitySurface(CamelModel):
     strike_type: StrikeType
     """
     Strike representation used for this surface, e.g. ABSOLUTE or LOG_MONEYNESS.
@@ -170,7 +170,7 @@ class RawVolatilitySurface(BaseModel):
     """
 
 
-class InterpolatedVolatilitySurface(BaseModel):
+class InterpolatedVolatilitySurface(CamelModel):
     """
     A calibrated volatility surface with a dense grid of fitted vols. Each array
     is of equal length and corresponds to (x, y, z) for the mesh.
@@ -209,7 +209,7 @@ class InterpolatedVolatilitySurface(BaseModel):
     """
 
 
-class VolatilitySurfaceVersion(BaseModel):
+class VolatilitySurfaceVersion(CamelModel):
     """
     A single version of a fitted volatility surface, with both the raw and interpolated content.
     """

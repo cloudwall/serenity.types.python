@@ -84,7 +84,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "exceptiongroup"
-version = "1.0.2"
+version = "1.0.4"
 description = "Backport of PEP 654 (exception groups)"
 category = "dev"
 optional = false
@@ -132,8 +132,16 @@ pygments = "*"
 restructuredtext-lint = "*"
 
 [[package]]
+name = "humps"
+version = "0.2.2"
+description = "camelCase converter"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "identify"
-version = "2.5.8"
+version = "2.5.9"
 description = "File identification library for Python"
 category = "dev"
 optional = false
@@ -160,7 +168,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "importlib-metadata"
-version = "5.0.0"
+version = "5.1.0"
 description = "Read metadata from Python packages"
 category = "dev"
 optional = false
@@ -394,7 +402,7 @@ docutils = ">=0.11,<1.0"
 
 [[package]]
 name = "setuptools"
-version = "65.5.1"
+version = "65.6.3"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "dev"
 optional = false
@@ -557,11 +565,11 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "urllib3"
-version = "1.26.12"
+version = "1.26.13"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 category = "dev"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, <4"
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 
 [package.extras]
 brotli = ["brotli (>=1.0.9)", "brotlicffi (>=0.8.0)", "brotlipy (>=0.6.0)"]
@@ -570,7 +578,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
 name = "virtualenv"
-version = "20.16.7"
+version = "20.17.0"
 description = "Virtual Python Environment builder"
 category = "dev"
 optional = false
@@ -587,7 +595,7 @@ testing = ["coverage (>=6.2)", "coverage-enable-subprocess (>=1)", "flaky (>=3.7
 
 [[package]]
 name = "zipp"
-version = "3.10.0"
+version = "3.11.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 category = "dev"
 optional = false
@@ -600,7 +608,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<4"
-content-hash = "4a6a65b345dd689e5ae3a86bf0cb824418c6cb2b81d6ade2211d3e9461b83b95"
+content-hash = "863e6a465b3536bb5129d56277b73c9af178fa740842b34d88456a698f0b6a09"
 
 [metadata.files]
 alabaster = [
@@ -640,8 +648,8 @@ docutils = [
     {file = "docutils-0.17.1.tar.gz", hash = "sha256:686577d2e4c32380bb50cbb22f575ed742d58168cee37e99117a854bcd88f125"},
 ]
 exceptiongroup = [
-    {file = "exceptiongroup-1.0.2-py3-none-any.whl", hash = "sha256:c22f11ec6a10d2b453871c5c5fe887436c4d1961324ce9090f2ca6ddc4180c27"},
-    {file = "exceptiongroup-1.0.2.tar.gz", hash = "sha256:a31cd183c3dea02e617aab5153588d5f7258a77b51f0ef41b3815ae8a0d0f695"},
+    {file = "exceptiongroup-1.0.4-py3-none-any.whl", hash = "sha256:542adf9dea4055530d6e1279602fa5cb11dab2395fa650b8674eaec35fc4a828"},
+    {file = "exceptiongroup-1.0.4.tar.gz", hash = "sha256:bd14967b79cd9bdb54d97323216f8fdf533e278df937aa2a90089e7d6e06e5ec"},
 ]
 filelock = [
     {file = "filelock-3.8.0-py3-none-any.whl", hash = "sha256:617eb4e5eedc82fc5f47b6d61e4d11cb837c56cb4544e39081099fa17ad109d4"},
@@ -655,9 +663,13 @@ flake8-rst-docstrings = [
     {file = "flake8-rst-docstrings-0.2.7.tar.gz", hash = "sha256:2740067ab9237559dd45a3434d8c987792c7b259ca563621a3b95efe201f5382"},
     {file = "flake8_rst_docstrings-0.2.7-py3-none-any.whl", hash = "sha256:5d56075dce360bcc9c6775bfe7cb431aa395de600ca7e8d40580a28d50b2a803"},
 ]
+humps = [
+    {file = "humps-0.2.2-py2.py3-none-any.whl", hash = "sha256:401de60fd73673b697086ba7c865966751c57b11cce57a37c9eabb3e75938417"},
+    {file = "humps-0.2.2.tar.gz", hash = "sha256:777f7a17f6b20aa9cc078d63b56ebd66532c6b2c88b370f1d596d5205410f67c"},
+]
 identify = [
-    {file = "identify-2.5.8-py2.py3-none-any.whl", hash = "sha256:48b7925fe122720088aeb7a6c34f17b27e706b72c61070f27fe3789094233440"},
-    {file = "identify-2.5.8.tar.gz", hash = "sha256:7a214a10313b9489a0d61467db2856ae8d0b8306fc923e03a9effa53d8aedc58"},
+    {file = "identify-2.5.9-py2.py3-none-any.whl", hash = "sha256:a390fb696e164dbddb047a0db26e57972ae52fbd037ae68797e5ae2f4492485d"},
+    {file = "identify-2.5.9.tar.gz", hash = "sha256:906036344ca769539610436e40a684e170c3648b552194980bb7b617a8daeb9f"},
 ]
 idna = [
     {file = "idna-3.4-py3-none-any.whl", hash = "sha256:90b77e79eaa3eba6de819a0c442c0b4ceefc341a7a2ab77d7562bf49f425c5c2"},
@@ -668,8 +680,8 @@ imagesize = [
     {file = "imagesize-1.4.1.tar.gz", hash = "sha256:69150444affb9cb0d5cc5a92b3676f0b2fb7cd9ae39e947a5e11a36b4497cd4a"},
 ]
 importlib-metadata = [
-    {file = "importlib_metadata-5.0.0-py3-none-any.whl", hash = "sha256:ddb0e35065e8938f867ed4928d0ae5bf2a53b7773871bfe6bcc7e4fcdc7dea43"},
-    {file = "importlib_metadata-5.0.0.tar.gz", hash = "sha256:da31db32b304314d044d3c12c79bd59e307889b287ad12ff387b3500835fc2ab"},
+    {file = "importlib_metadata-5.1.0-py3-none-any.whl", hash = "sha256:d84d17e21670ec07990e1044a99efe8d615d860fd176fc29ef5c306068fda313"},
+    {file = "importlib_metadata-5.1.0.tar.gz", hash = "sha256:d5059f9f1e8e41f80e9c56c2ee58811450c31984dfa625329ffd7c0dad88a73b"},
 ]
 iniconfig = [
     {file = "iniconfig-1.1.1-py2.py3-none-any.whl", hash = "sha256:011e24c64b7f47f6ebd835bb12a743f2fbe9a26d4cecaa7f53bc4f35ee9da8b3"},
@@ -857,8 +869,8 @@ restructuredtext-lint = [
     {file = "restructuredtext_lint-1.4.0.tar.gz", hash = "sha256:1b235c0c922341ab6c530390892eb9e92f90b9b75046063e047cacfb0f050c45"},
 ]
 setuptools = [
-    {file = "setuptools-65.5.1-py3-none-any.whl", hash = "sha256:d0b9a8433464d5800cbe05094acf5c6d52a91bfac9b52bcfc4d41382be5d5d31"},
-    {file = "setuptools-65.5.1.tar.gz", hash = "sha256:e197a19aa8ec9722928f2206f8de752def0e4c9fc6953527360d1c36d94ddb2f"},
+    {file = "setuptools-65.6.3-py3-none-any.whl", hash = "sha256:57f6f22bde4e042978bcd50176fdb381d7c21a9efa4041202288d3737a0c6a54"},
+    {file = "setuptools-65.6.3.tar.gz", hash = "sha256:a7620757bf984b58deaf32fc8a4577a9bbc0850cf92c20e1ce41c38c19e5fb75"},
 ]
 snowballstemmer = [
     {file = "snowballstemmer-2.2.0-py2.py3-none-any.whl", hash = "sha256:c8e1716e83cc398ae16824e5572ae04e0d9fc2c6b985fb0f900f5f0c96ecba1a"},
@@ -909,14 +921,14 @@ typing-extensions = [
     {file = "typing_extensions-4.4.0.tar.gz", hash = "sha256:1511434bb92bf8dd198c12b1cc812e800d4181cfcb867674e0f8279cc93087aa"},
 ]
 urllib3 = [
-    {file = "urllib3-1.26.12-py2.py3-none-any.whl", hash = "sha256:b930dd878d5a8afb066a637fbb35144fe7901e3b209d1cd4f524bd0e9deee997"},
-    {file = "urllib3-1.26.12.tar.gz", hash = "sha256:3fa96cf423e6987997fc326ae8df396db2a8b7c667747d47ddd8ecba91f4a74e"},
+    {file = "urllib3-1.26.13-py2.py3-none-any.whl", hash = "sha256:47cc05d99aaa09c9e72ed5809b60e7ba354e64b59c9c173ac3018642d8bb41fc"},
+    {file = "urllib3-1.26.13.tar.gz", hash = "sha256:c083dd0dce68dbfbe1129d5271cb90f9447dea7d52097c6e0126120c521ddea8"},
 ]
 virtualenv = [
-    {file = "virtualenv-20.16.7-py3-none-any.whl", hash = "sha256:efd66b00386fdb7dbe4822d172303f40cd05e50e01740b19ea42425cbe653e29"},
-    {file = "virtualenv-20.16.7.tar.gz", hash = "sha256:8691e3ff9387f743e00f6bb20f70121f5e4f596cae754531f2b3b3a1b1ac696e"},
+    {file = "virtualenv-20.17.0-py3-none-any.whl", hash = "sha256:40a7e06a98728fd5769e1af6fd1a706005b4bb7e16176a272ed4292473180389"},
+    {file = "virtualenv-20.17.0.tar.gz", hash = "sha256:7d6a8d55b2f73b617f684ee40fd85740f062e1f2e379412cb1879c7136f05902"},
 ]
 zipp = [
-    {file = "zipp-3.10.0-py3-none-any.whl", hash = "sha256:4fcb6f278987a6605757302a6e40e896257570d11c51628968ccb2a47e80c6c1"},
-    {file = "zipp-3.10.0.tar.gz", hash = "sha256:7a7262fd930bd3e36c50b9a64897aec3fafff3dfdeec9623ae22b40e93f99bb8"},
+    {file = "zipp-3.11.0-py3-none-any.whl", hash = "sha256:83a28fcb75844b5c0cdaf5aa4003c2d728c77e05f5aeabe8e95e56727005fbaa"},
+    {file = "zipp-3.11.0.tar.gz", hash = "sha256:a7a22e05929290a67401440b39690ae6563279bced5f314609d9d03798f56766"},
 ]

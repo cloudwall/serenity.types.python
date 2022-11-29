@@ -3,7 +3,7 @@ from enum import Enum
 from typing import List, Optional
 from uuid import UUID
 
-from pydantic import BaseModel
+from serenity_types.utils.serialization import CamelModel
 
 
 class CurveUsage(Enum):
@@ -70,7 +70,7 @@ class InterpolationMethod(Enum):
     FLAT_FWD = "FLAT_FWD"
 
 
-class CurvePoint(BaseModel):
+class CurvePoint(CamelModel):
     """
     A discrete input point on the curve, with all the metadata describing
     what is being provided and its source to help reproduce the results.
@@ -126,7 +126,7 @@ class CurvePoint(BaseModel):
     """
 
 
-class YieldCurveDefinition(BaseModel):
+class YieldCurveDefinition(CamelModel):
     """
     A uniquely-identified set of YC parameters for bootstrapping a YieldCurve.
     """
@@ -164,7 +164,7 @@ class YieldCurveDefinition(BaseModel):
     """
 
 
-class YieldCurveAvailability(BaseModel):
+class YieldCurveAvailability(CamelModel):
     """
     Information about version availability for a given YC definition.
     """
@@ -180,7 +180,7 @@ class YieldCurveAvailability(BaseModel):
     """
 
 
-class RawYieldCurve(BaseModel):
+class RawYieldCurve(CamelModel):
     """
     A term structure of yield curve inputs. The RAW representation is offered to clients so they
     can either do their own interpolation or for diagnostics.
@@ -193,7 +193,7 @@ class RawYieldCurve(BaseModel):
     """
 
 
-class InterpolatedYieldCurve(BaseModel):
+class InterpolatedYieldCurve(CamelModel):
     """
     A term structure of rates and discount factors built from a RAW representation. This is the version
     that you should pass in for option valuation purposes, and is suitable for extracting rates and discount
@@ -221,7 +221,7 @@ class InterpolatedYieldCurve(BaseModel):
     """
 
 
-class YieldCurveVersion(BaseModel):
+class YieldCurveVersion(CamelModel):
     """
     A single version of a YieldCurveDefinition, inclusive of its raw and interpolated YC content.
     """
