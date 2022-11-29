@@ -11,6 +11,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
+humps = "^0.2.2"
 pydantic = "^1.9.1"
 python = ">=3.8,<4"
 

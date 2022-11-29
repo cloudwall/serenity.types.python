@@ -2,16 +2,15 @@ from datetime import datetime
 from typing import Dict, List, Optional
 from uuid import UUID
 
-from pydantic import BaseModel
-
 from serenity_types.pricing.derivatives.options.volsurface import (
     InterpolatedVolatilitySurface, VolModel, DiscountingMethod
 )
 from serenity_types.pricing.derivatives.rates.yield_curve import InterpolatedYieldCurve
 from serenity_types.refdata.options import OptionStyle, OptionType
+from serenity_types.utils.serialization import CamelModel
 
 
-class OptionValuation(BaseModel):
+class OptionValuation(CamelModel):
     """
     A collection of option economics and market data overrides used to describe a single option valuation
     requested from the service. This is intentionally meant to support both listed contract pricing and
@@ -109,7 +108,7 @@ class OptionValuation(BaseModel):
     """
 
 
-class OptionValuationRequest(BaseModel):
+class OptionValuationRequest(CamelModel):
     """
     A batch request to run one or more option valuations using a single model configuration and base
     set of curves and the vol surface. Reasonable defaults will be provided for any missing inputs, e.g.
@@ -173,7 +172,7 @@ class OptionValuationRequest(BaseModel):
     """
 
 
-class OptionValuationResult(BaseModel):
+class OptionValuationResult(CamelModel):
     """
     The result of a series of option valuations based on the parameters in the OptionValuationRequest.
     Note that the basic calculation is just Black-Scholes, but if you provide additional information
