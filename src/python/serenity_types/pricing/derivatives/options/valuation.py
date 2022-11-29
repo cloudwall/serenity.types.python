@@ -50,7 +50,6 @@ class OptionValuation(BaseModel):
     expiry: Optional[datetime]
     """
     Expiration expressed in absolute terms as a date/time. Not required if optionAssetId provided
-    or if time_to_expiry provided.
     """
 
     option_type: Optional[OptionType]
@@ -227,7 +226,7 @@ class OptionValuationResult(BaseModel):
     Greek output: delta, the option's sensitivity to spot changes.
     """
 
-    delta_qty: float
+    delta_qty: Optional[float]
     """
     Delta X qty X contract_size, the delta exposure expressed in qty of underlying.
     """
@@ -243,7 +242,7 @@ class OptionValuationResult(BaseModel):
     Greek output: gamma, the delta's sensitivity to spot changes.
     """
 
-    gamma_ccy: float
+    gamma_ccy: Optional[float]
     """
     Gamma X value^2, a.k.a. the second derivative of position value with respect to spot,
     expressed in base currency.
@@ -254,7 +253,7 @@ class OptionValuationResult(BaseModel):
     Greek output: vega, the option's sensitivity to volatility changes.
     """
 
-    vega_ccy: float
+    vega_ccy: Optional[float]
     """
     Partial derivative of the position value of the contract with respect to vega X 1%, expressed in base currency.
     """
@@ -264,7 +263,7 @@ class OptionValuationResult(BaseModel):
     Greek output: rho, the delta's sensitivity to interest rate changes.
     """
 
-    rho_ccy: float
+    rho_ccy: Optional[float]
     """
     Partial derivative of the spot notional value of the contract with respect to rho X 1bp, expressed in base currency.
     """
@@ -274,8 +273,14 @@ class OptionValuationResult(BaseModel):
     Greek output: theta, the delta's sensitivity to time decay.
     """
 
-    theta_ccy: float
+    theta_ccy: Optional[float]
     """
     Partial derivative of the spot notional value of the contract with respect to theta X 1 day,
     expressed in base currency.
+    """
+
+    warnings: Optional[List[str]]
+    """
+    Serenity generated warnings, e.g. the specified OptionValuation.option_asset_id is invalid,
+    and so it is excluded from option valuation.
     """
