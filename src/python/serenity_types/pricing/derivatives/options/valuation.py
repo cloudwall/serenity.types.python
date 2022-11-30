@@ -118,9 +118,10 @@ class OptionValuationRequest(CamelModel):
     VolatilitySurfaceVersion.interpolated.definition.underlier_asset_id.
     """
 
-    as_of_time: datetime
+    as_of_time: Optional[datetime]
     """
     The as-of time to use for loading all marketdata, surfaces, yield curves and refdata from the database.
+    Defaulted to the latest up to this time.
     """
 
     model_config_id: Optional[UUID]
@@ -276,10 +277,4 @@ class OptionValuationResult(CamelModel):
     """
     Partial derivative of the spot notional value of the contract with respect to theta X 1 day,
     expressed in base currency.
-    """
-
-    warnings: Optional[List[str]]
-    """
-    Serenity generated warnings, e.g. the specified OptionValuation.option_asset_id is invalid,
-    and so it is excluded from option valuation.
     """
