@@ -140,12 +140,12 @@ class OptionValuationRequest(CamelModel):
     How to derive the forward price for the options: from curves or futures, or disregard the forward.
     """
 
-    vol_surface_id: Optional[Dict[UUID, UUID]]
+    vol_surface_id: Optional[UUID]
     """
     The optional unique ID of the surface to load, latest version as-of the as_of_time.
     """
 
-    vol_surface: Optional[Dict[UUID, InterpolatedVolatilitySurface]]
+    vol_surface: Optional[InterpolatedVolatilitySurface]
     """
     The optional client-provided volatility surface to use. If the client provides neither a VS ID
     nor their own volatility surface, the system will load the default for the underlying as-of the as_of_time.
