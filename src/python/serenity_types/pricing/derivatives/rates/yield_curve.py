@@ -155,7 +155,14 @@ class YieldCurveDefinition(CamelModel):
 
     underlier_asset_id: UUID
     """
-    The linked asset for this curve, e.g. for an Ethereum staking curve, this would be ETH.
+    The linked risk exposure for this curve, e.g. for an Ethereum staking curve, this would be
+    ETH (tok.eth.ethereum). DEPRECATED; going forward we we use the more universal underlier_exposure_id.
+    """
+
+    underlier_exposure_id: Optional[UUID]
+    """
+    The linked risk exposure for this curve, e.g. e.g. for an Ethereum staking curve, this would be
+    ETH (tok.eth). In the initial release of the API this can be left unpopulated.
     """
 
     display_name: str

@@ -35,19 +35,41 @@ class ListedDerivative(Asset):
     """
     An exchange-listed derivative contract.
     """
+
     exchange_symbol: str
+    """
+    The native symbol used by the exchange for this contract, e.g. BTCUSDT.
+    """
 
     underlier_exposure_id: UUID
+    """
+    The underlying exposure that this derivatives references, e.g. BTC (tok.btc).
+    """
 
-    reference_exposure_id: Optional[UUID]
-
-    quote_exposure_id: UUID
+    reference_index_id: Optional[UUID]
+    """
+    The specific index, e.g. Deribit BTC Index, used to get a fair price for the underlying at settlement time.
+    """
 
     exchange_id: UUID
+    """
+    The exchange on which this contract is listed.
+    """
 
     contract_size: float
+    """
+    Size of the contract in qty of underlying.
+    """
+
+    settlement_exposure_id: UUID
+    """
+    The exposure that this derivatives settles in, e.g. on Deribit, CASH settled, it might be USD.
+    """
 
     settlement_type: SettlementType
+    """
+    Whether this contract settles in cash or in the underlying itself.
+    """
 
 
 class Expiry(CamelModel):

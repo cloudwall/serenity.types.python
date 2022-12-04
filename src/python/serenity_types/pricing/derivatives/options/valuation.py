@@ -38,7 +38,13 @@ class OptionValuation(CamelModel):
 
     underlier_asset_id: Optional[UUID]
     """
-    Serenity asset identifier of the underlier (currently only BTC, ETH or SOL). Not required if optionAssetId provided.
+    Serenity asset identifier of the underlier, e.g. BTC (tok.btc.bitcoin). Not required if optionAssetId provided.
+    DEPRECATED; going forward we we use the more universal underlier_exposure_id.
+    """
+
+    underlier_exposure_id: Optional[UUID]
+    """
+    The linked risk exposure for the underlier, e.g. BTC (tok.btc). In the initial release of the API not yet supported.
     """
 
     strike: Optional[float]
