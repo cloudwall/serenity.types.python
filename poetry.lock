@@ -359,7 +359,7 @@ testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.
 name = "pytz"
 version = "2022.6"
 description = "World timezone definitions, modern and historical"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 
@@ -608,7 +608,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<4"
-content-hash = "863e6a465b3536bb5129d56277b73c9af178fa740842b34d88456a698f0b6a09"
+content-hash = "54eda135f05ee42b26bdbe4d7dc2553fd3987fad6482bd86c3ba576c9f8b0c84"
 
 [metadata.files]
 alabaster = [

@@ -87,7 +87,9 @@ class VolatilitySurfaceDefinition(CamelModel):
 
     underlier_asset_id: UUID
     """
-    The linked asset for this surface, e.g. for a Bitcoin volatility surface, this is BTC.
+    The linked asset for this surface, e.g. for a Bitcoin volatility surface, this is BTC (tok.btc.bitcoin).
+    Note we will be switching to the Exposure UUID instead in a future release (e.g. tok.btc), once the
+    reference data is available.
     """
 
     display_name: str
