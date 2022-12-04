@@ -78,5 +78,11 @@ class ListedDerivative(DerivativeAsset):
 
 class Expiry(CamelModel):
     expiration_date: date
+    """
+    The local expiration date in the contract specification; exact datetime requires a timezone.
+    """
 
     expiration_time: time
+    """
+    The local expiration time in the contract specification; exact datetime requires a timezone.
+    """
