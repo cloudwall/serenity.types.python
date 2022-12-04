@@ -36,9 +36,11 @@ class DerivativeAsset(Asset):
     A listed or OTC derivative contract.
     """
 
-    underlier_exposure_id: UUID
+    underlier_asset_id: UUID
     """
-    The underlying exposure that this derivatives references, e.g. BTC (tok.btc).
+    The underlying asset for this derivative contract, e.g. BTC (tok.btc.bitcoin).
+    Note we will be switching to the Exposure UUID instead in a future release (e.g. tok.btc),
+    once the reference data is available.
     """
 
     reference_index_id: Optional[UUID]
@@ -51,9 +53,10 @@ class DerivativeAsset(Asset):
     Size of the contract in qty of underlying.
     """
 
-    settlement_exposure_id: UUID
+    settlement_asset_id: UUID
     """
-    The exposure that this derivatives settles in, e.g. on Deribit, CASH settled, it might be USD.
+    The asset that this derivatives settles in, e.g. on Deribit, CASH settled, it might be USD.
+    Note we will be switching to the Exposure UUID instead in a future release.
     """
 
     settlement_type: SettlementType
