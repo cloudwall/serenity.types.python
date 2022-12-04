@@ -34,6 +34,25 @@ class ExposureType(Enum):
 
 
 class Exposure(CamelModel):
+    """
+    Generic exposure to some bundle of financial risks. In multiple contexts we sometimes
+    want to refer not to a specific tradable instrument but instead to the exposure. For
+    instance, a centralized exchange listing DAI-USDT is not going to guarantee for you
+    that the DAI tokens are specifically those issued on the Ethereum blockchain. In Serenity,
+    the latter is an Asset, while the general idea of DAI, which entails exposure to everything
+    issued by MakerDAO as a DAI token on any blockchain, is an Exposure. This also lets us
+    express things like USDT is pegged to USD, but that doesn't necessarily mean Tether holds
+    USD currency positions; it aims to track the price of the dollar. Tether is a token Exposure
+    which is pegged to a fiat Exposure, USD, which may be tokenized as an asset on Ethereum
+    and then held in a wallet. Considering all of this more generally, when we assess the risks
+    in a portfolio, we must consider that, say, USDT on Binance is just a SQL record; it is,
+    at the end of the day, a claim on Binance to get that exposure which may or may not be
+    honored, just as USDT is a claim on USD exposure which is not risk-free. Even a tokenized
+    USD deposit embeds a dual counterparty risk: to the smart contract, and to the bank -- yet
+    we still want to express this idea that it's holding dollars and this is in theory the
+    same as what you could by redeeming USDT for USD.
+    """
+
     exposure_id: UUID
     """
     Unique identifier for this exposure.

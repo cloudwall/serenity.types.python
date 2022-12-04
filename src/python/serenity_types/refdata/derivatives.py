@@ -67,11 +67,6 @@ class ListedDerivative(DerivativeAsset):
     An exchange-listed derivative contract.
     """
 
-    exchange_symbol: str
-    """
-    The native symbol used by the exchange for this contract, e.g. BTCUSDT.
-    """
-
     exchange_id: UUID
     """
     The exchange on which this contract is listed.

@@ -23,13 +23,6 @@ class TokenAsset(Asset):
     The blockchain on which this particular asset has been tokenized.
     """
 
-    native_symbol: str
-    """
-    The native blockchain symbol -- e.g. in Ethereum, the ERC20 smart contract symbol -- used
-    to refer to this particular asset. This is in general not unique: the blockchain_symbol
-    for tok.dai.ethereum and tok.dai.solana is DAI in both cases.
-    """
-
 
 class PegMechanism(Enum):
     """
