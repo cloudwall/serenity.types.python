@@ -31,14 +31,9 @@ class PayoffType(Enum):
     """
 
 
-class ListedDerivative(Asset):
+class DerivativeAsset(Asset):
     """
-    An exchange-listed derivative contract.
-    """
-
-    exchange_symbol: str
-    """
-    The native symbol used by the exchange for this contract, e.g. BTCUSDT.
+    A listed or OTC derivative contract.
     """
 
     underlier_exposure_id: UUID
@@ -49,11 +44,6 @@ class ListedDerivative(Asset):
     reference_index_id: Optional[UUID]
     """
     The specific index, e.g. Deribit BTC Index, used to get a fair price for the underlying at settlement time.
-    """
-
-    exchange_id: UUID
-    """
-    The exchange on which this contract is listed.
     """
 
     contract_size: float
@@ -69,6 +59,22 @@ class ListedDerivative(Asset):
     settlement_type: SettlementType
     """
     Whether this contract settles in cash or in the underlying itself.
+    """
+
+
+class ListedDerivative(DerivativeAsset):
+    """
+    An exchange-listed derivative contract.
+    """
+
+    exchange_symbol: str
+    """
+    The native symbol used by the exchange for this contract, e.g. BTCUSDT.
+    """
+
+    exchange_id: UUID
+    """
+    The exchange on which this contract is listed.
     """
 
 

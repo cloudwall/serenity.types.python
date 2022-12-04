@@ -11,22 +11,22 @@ class ExposureType(Enum):
     Bilateral exposure to a particular counterparty.
     """
 
-    TOKEN_ISSUER = 'TOKEN_ISSUER'
+    TOKEN_ISSUANCE = 'TOKEN_ISSUANCE'
     """
     Exposure to an issuance of a token.
     """
 
-    DEBT_ISSUER = 'DEBT_ISSUER'
+    DEBT_ISSUANCE = 'DEBT_ISSUANCE'
     """
-    Exposure to an issuance of debt by a sovereign or corporate entity/
+    Exposure to an issuance of debt by a sovereign or corporate entity.
     """
 
-    EQUITY_ISSUER = 'EQUITY_ISSUER'
+    EQUITY_ISSUANCE = 'EQUITY_ISSUANCE'
     """
     Exposure to an issuance of equity by a corporate entity, whether public or private.
     """
 
-    FIAT_ISSUER = 'FIAT_ISSUER'
+    FIAT_ISSUANCE = 'FIAT_ISSUANCE'
     """
     Exposure to a sovereign, supranational central bank (ECB) or multinational
     organization (the IMF, for SDR).
