@@ -5,6 +5,9 @@ from serenity_types.refdata.asset import Asset
 
 class Index(Asset):
     provider_org_id: UUID
+    """
+    The organization that publishes this index, e.g. S&P. Must be of type INDEX_PROVIDER.
+    """
 
 
 class ReferenceIndex(Index):
