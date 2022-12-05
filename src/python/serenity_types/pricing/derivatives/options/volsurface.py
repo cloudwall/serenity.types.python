@@ -40,22 +40,40 @@ class StrikeType(Enum):
 
 class DiscountingMethod(Enum):
     """
-    In valuation, the strategy to use for getting the forward price for Black-Scholes.
+    The strategy to use for deriving the discount rate, i.e. the assumed interest rate to
+    use when discounting prices to present.
     """
 
     CURVE = "CURVE"
     """
-    Extract a discount factor from the yield curve provided and discount the spot price.
+    Extract a discount factor from discount curves, either provided via API or loaded from database.
+    """
+
+    SELF_DISCOUNTING = "SELF_DISCOUNTING"
+    """
+    Use the base asset's projection rate as the discount rate instead of a discount curve.
+    This is the default, and the option you should choose if you want to reproduce the Deribit
+    forward pricing model.
+    """
+
+
+class ProjectionMethod(Enum):
+    """
+    The strategy to use for deriving the projection rates, i.e. the forward interest rates.
+    """
+
+    CURVE = "CURVE"
+    """
+    Projection rate is extracted from a projection curve, either provided via API or loaded from database.
+    This option is respected in both real-time pricing and historical pricing modes, though in real-time
+    the curve version loaded is always the very latest. Select CURVE if you want a more stable forward.
     """
 
     FUTURES = "FUTURES"
     """
-    Use a futures price or its proxy as the forward price.
-    """
-
-    DISABLED = "DISABLED"
-    """
-    Assume a zero risk-free rate (Deribit approach)
+    Projection rate is snapped from the corresponding Deribit futures prices; this option is only
+    supported in real-time pricing mode. Select FUTURES if in real-time you want to reproduce
+    Deribit forward pricing model and incorporate up-to-the-moment market view on the forward.
     """
 
 
