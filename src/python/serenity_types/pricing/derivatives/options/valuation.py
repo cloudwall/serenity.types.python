@@ -42,6 +42,7 @@ class YieldCurveOverride(CamelModel):
     want to do a shift of the yield curve, specify either ID or curve and then an additive_bump.
     Everything null or both yield_curve_id and yield_curve specified yields validation errors.
     """
+
     yield_curve_id: Optional[UUID]
     """
     Optionally specifies a supported YieldCurveDefinition UUID from the database. Not every
