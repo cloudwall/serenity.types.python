@@ -254,7 +254,7 @@ class OptionValuationResult(CamelModel):
     Implied volatility (IV)
     """
 
-    spot_notional: Optional[float]
+    spot_notional: float
     """
     The base currency notional of the position: number of contracts (qty) X  spot_price X contract_size.
     """
@@ -279,12 +279,12 @@ class OptionValuationResult(CamelModel):
     Greek output: delta, the option's sensitivity to spot changes.
     """
 
-    delta_qty: Optional[float]
+    delta_qty: float
     """
     Delta X qty X contract_size, the delta exposure expressed in qty of underlying.
     """
 
-    delta_ccy: Optional[float]
+    delta_ccy: float
     """
     Delta X value, a.k.a. the partial derivative of position value with respect to spot,
     expressed in base currency
@@ -295,7 +295,7 @@ class OptionValuationResult(CamelModel):
     Greek output: gamma, the delta's sensitivity to spot changes.
     """
 
-    gamma_ccy: Optional[float]
+    gamma_ccy: float
     """
     Gamma X value^2, a.k.a. the second derivative of position value with respect to spot,
     expressed in base currency.
@@ -306,7 +306,7 @@ class OptionValuationResult(CamelModel):
     Greek output: vega, the option's sensitivity to volatility changes.
     """
 
-    vega_ccy: Optional[float]
+    vega_ccy: float
     """
     Partial derivative of the position value of the contract with respect to vega X 1%, expressed in base currency.
     """
@@ -316,7 +316,7 @@ class OptionValuationResult(CamelModel):
     Greek output: rho, the delta's sensitivity to interest rate changes.
     """
 
-    rho_ccy: Optional[float]
+    rho_ccy: float
     """
     Partial derivative of the spot notional value of the contract with respect to rho X 1bp, expressed in base currency.
     """
@@ -326,7 +326,7 @@ class OptionValuationResult(CamelModel):
     Greek output: theta, the delta's sensitivity to time decay.
     """
 
-    theta_ccy: Optional[float]
+    theta_ccy: float
     """
     Partial derivative of the spot notional value of the contract with respect to theta X 1 day,
     expressed in base currency.
