@@ -4,11 +4,68 @@ from uuid import UUID
 from pydantic import validator
 
 from serenity_types.pricing.derivatives.options.volsurface import (
-    InterpolatedVolatilitySurface, VolModel, DiscountingMethod
+    InterpolatedVolatilitySurface, VolModel, DiscountingMethod, ProjectionMethod
 )
 from serenity_types.pricing.derivatives.rates.yield_curve import InterpolatedYieldCurve
 from serenity_types.refdata.options import OptionStyle, OptionType
 from serenity_types.utils.serialization import CamelModel
+
+
+class MarketDataOverride(CamelModel):
+    """
+    Helper type for representing replacements and bumps for market data inputs in pricing.
+    """
+
+    replacement: Optional[float]
+    """
+    Replacement value for the given market data point.
+    """
+
+    additive_bump: Optional[float]
+    """
+    A value (potentially negative) to add the observed value from stored or live market data.
+    """
+
+    @validator('replacement', always=True)
+    def check_bump_or_replace_but_not_both(cls, replacement, values):
+        if values.get('additive_bump') and replacement:
+            raise ValueError("Please specify only one of 'replacement' or 'additive_bump'")
+        return replacement
+
+
+class YieldCurveOverride(CamelModel):
+    """
+    Helper for representing explicitly either override by UUID (load that YieldCurveDefinition
+    from the database for the appropriate as_of_time) or by value. The client can also specify
+    mutations to make to this input market data. In the case where you want to replace the
+    rate entirely do not specify either yield_curve_id or yield_curve; in the case where you
+    want to do a shift of the yield curve, specify either ID or curve and then an additive_bump.
+    Everything null or both yield_curve_id and yield_curve specified yields validation errors.
+    """
+    yield_curve_id: Optional[UUID]
+    """
+    Optionally specifies a supported YieldCurveDefinition UUID from the database. Not every
+    definition is accepted, e.g. you cannot pass in a CurveUsage.PROJECTION curve for discounting.
+    """
+
+    yield_curve: Optional[InterpolatedYieldCurve]
+    """
+    Optionally specifies a supported yield curve bootstrapped by the client or loaded separately. Not every
+    definition is accepted, e.g. you cannot pass in a CurveUsage.PROJECTION curve for discounting.
+    """
+
+    rate_override: Optional[MarketDataOverride]
+    """
+    Optionally modifies the input data. Note properly you should not need to both provide a yield_curve
+    and modify it, but in case clients want to play back our stored yield_curve via API without
+    having to mutate the curve themselves, it could make sense.
+    """
+
+    @validator('yield_curve', always=True)
+    def check_yield_curve_ids_or_yield_curve(cls, yield_curve, values):
+        if values.get('yield_curve_id') and yield_curve:
+            raise ValueError("Please specify only one of 'yield_curve_id' or 'yield_curve'")
+        return yield_curve
 
 
 class OptionValuation(CamelModel):
@@ -25,10 +82,10 @@ class OptionValuation(CamelModel):
     with optionAssetId, by convention the unique ID or symbol of that option should be used.
     """
 
-    qty: Optional[int]
+    qty: Optional[int] = 1
     """
-    Number of option contracts; used when computing the spot notional of the option position. Optional;
-    if not provided the various position value calculations will be skipped.
+    Number of option contracts; used when computing the spot notional of the option position. If you take
+    the default every scaled value (e.g. spot_notional, delta_ccy) will be a unit notional value.
     """
 
     option_asset_id: Optional[UUID]
@@ -59,55 +116,25 @@ class OptionValuation(CamelModel):
     Whether we are pricing a PUT or CALL option.
     """
 
-    option_style: Optional[OptionStyle]
+    option_style: Optional[OptionStyle] = OptionStyle.EUROPEAN
     """
-    The variety of option being priced.
-    """
-
-    contract_size: Optional[float]
-    """
-    For scaling purposes, the # of underlying per contract. Optional;
-    if not provided the various position value calculations will be skipped.
+    The variety of option being priced. Our pricer only supports EUROPEAN at this time, so defaults accordingly.
     """
 
-    implied_vol_override: Optional[float]
+    contract_size: Optional[float] = 1
     """
-    Substitute a fixed IV when pricing this option, and ignore the volatility surface.
-    """
-
-    implied_vol_bump: Optional[float]
-    """
-    Include an additive bump on the IV extracted from the surface when pricing this option.
+    For scaling purposes, the # of underlying per contract. Only used if option_asset_id is not set, otherwise it's
+    loaded from the contract specification in the database.
     """
 
-    rate_overrides: Optional[Dict[UUID, float]]
+    implied_vol_override: Optional[MarketDataOverride]
     """
-    In the case of DiscountingMethod.CURVE, override the interest rate assumptions used for BTC, USD, etc..
-    """
-
-    rate_bumps: Optional[Dict[UUID, float]]
-    """
-    In the case of DiscountingMethod.CURVE, include an additive bump for BTC, USD, etc. interest rates.
+    Replace or modify the stored volatility surface's IV for this option.
     """
 
-    spot_price_override: Optional[float]
+    spot_price_override: Optional[MarketDataOverride]
     """
-    In the case of DiscountingMethod.CURVE, override the spot price used to compute the forward.
-    """
-
-    spot_price_bump: Optional[float]
-    """
-    In the case of DiscountingMethod.CURVE, bump the spot price used to compute the forward.
-    """
-
-    forward_price_override: Optional[float]
-    """
-    In the case of DiscountingMethod.FUTURES, directly override the input price for the forward.
-    """
-
-    forward_price_bump: Optional[float]
-    """
-    In the case of DiscountingMethod.FUTURES, bump the input price for the forward.
+    Replace or modify the stored or observed spot price used when pricing this option.
     """
 
 
@@ -134,12 +161,22 @@ class OptionValuationRequest(CamelModel):
 
     base_currency_id: Optional[UUID]
     """
-    Base currency to use for expressing all notional values.
+    Base currency to use for expressing all notional values. Defaults to USD.
     """
 
-    discounting_method: Optional[DiscountingMethod]
+    discounting_method: Optional[DiscountingMethod] = DiscountingMethod.SELF_DISCOUNTING
     """
-    How to derive the forward price for the options: from curves or futures, or disregard the forward.
+    How to derive the discount rate: from the projection rate (self-discounting),
+    or from pre-built discounting curves either provided in API or loaded from the system.
+    """
+
+    projection_method: Optional[ProjectionMethod]
+    """
+    How to derive the projection rate when in real-time mode: from live futures prices, or from a curve.
+    The default depends on as_of_time. In the case of as_of_time being None the system runs in real-time
+    pricing mode and uses ProjectionMode.FUTURES. When as_of_time is provided the system runs in historical
+    pricing mode and defaults to ProjectionMode.CURVE. Setting both as_of_time and ProjectionMode.FUTURES
+    will yield a validation error from the API.
     """
 
     vol_surface_id: Optional[UUID]
@@ -153,20 +190,21 @@ class OptionValuationRequest(CamelModel):
     nor their own volatility surface, the system will load the default for the underlying as-of the as_of_time.
     """
 
-    yield_curve_ids: Optional[Dict[UUID, UUID]]
+    discounting_curve_overrides: Optional[YieldCurveOverride]
     """
-    The optional unique ID of the yield curves to load per asset, latest version as-of the as_of_time.
-    """
-
-    yield_curves: Optional[Dict[UUID, InterpolatedYieldCurve]]
-    """
-    The optional client-provided yield curves to use per asset. If the client provides neither a YC ID
-    nor their own yield curve for any given asset, the system will load the default as-of the as_of_time.
+    Various forms of modifications to the discounting curve: choosing a variant in the database; passing
+    in a complete curve by value; and/or replacing or shifting the extracted rate.
     """
 
-    vol_model: Optional[VolModel]
+    projection_curve_overrides: Optional[YieldCurveOverride]
     """
-    The volatility model used for evaluation purposes
+    Various forms of modifications to the projection curve: choosing a variant in the database; passing
+    in a complete curve by value; and/or replacing or shifting the extracted rate.
+    """
+
+    vol_model: Optional[VolModel] = VolModel.SVI
+    """
+    The volatility model used for valuation purposes.
     """
 
     options: List[OptionValuation]
@@ -175,17 +213,17 @@ class OptionValuationRequest(CamelModel):
     individual overrides or bumps for all inputs as part of each valuation object.
     """
 
-    @validator('yield_curves', always=True)
-    def check_yield_curve_ids_or_yield_curves(cls, yield_curves, values):
-        if values.get('yield_curve_ids') and yield_curves:
-            raise ValueError("Please specify only one of 'yield_curve_ids' or 'yield_curves'")
-        return yield_curves
-
     @validator('vol_surface', always=True)
     def check_vol_surface_id_or_vol_surface(cls, vol_surface, values):
         if values.get('vol_surface_id') and vol_surface:
             raise ValueError("Please specify only one of 'vol_surface_id' or 'vol_surface'")
         return vol_surface
+
+    @validator('options', always=False)
+    def check_non_empty_options_list(cls, options, values):
+        if len(options) == 0:
+            raise ValueError("Please provide at least one option in 'options'")
+        return options
 
 
 class OptionValuationResult(CamelModel):
