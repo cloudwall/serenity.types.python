@@ -145,11 +145,6 @@ class YieldCurveDefinition(CamelModel):
     The curve's intended purpose, e.g. for discounting or representing market view on forward rates.
     """
 
-    curve_method: Union[DiscountingMethod, ProjectionMethod]
-    """
-    Method to build this curve.
-    """
-
     interpolation_method: InterpolationMethod
     """
     The specific interpolator type used to bootstrap this curve.
