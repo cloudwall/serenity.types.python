@@ -98,11 +98,6 @@ class VolatilitySurfaceDefinition(CamelModel):
     Strike representation used for this surface, e.g. ABSOLUTE or LOG_MONEYNESS.
     """
 
-    discounting_method: DiscountingMethod
-    """
-    Discounting method used for this surface, e.g. CURVE or FUTURES or DISABLED.
-    """
-
     underlier_asset_id: UUID
     """
     The linked asset for this surface, e.g. for a Bitcoin volatility surface, this is BTC (tok.btc.bitcoin).
