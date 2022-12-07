@@ -1,9 +1,12 @@
 from datetime import date, datetime
 from enum import Enum
-from typing import List, Optional
+from typing import List, Optional, Union
 from uuid import UUID
 
 from serenity_types.utils.serialization import CamelModel
+from serenity_types.pricing.derivatives.options.volsurface import (
+    DiscountingMethod, ProjectionMethod
+)
 
 
 class CurveUsage(Enum):
@@ -140,6 +143,11 @@ class YieldCurveDefinition(CamelModel):
     curve_usage: CurveUsage
     """
     The curve's intended purpose, e.g. for discounting or representing market view on forward rates.
+    """
+
+    curve_method: Union[DiscountingMethod, ProjectionMethod]
+    """
+    Method to build this curve.
     """
 
     interpolation_method: InterpolationMethod
