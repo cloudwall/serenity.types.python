@@ -179,7 +179,7 @@ class RawVolatilitySurface(CamelModel):
     The projection rate used when computing the forward.
     """
 
-    discount_rate: float
+    discounting_rate: float
     """
     The discounting rate used when computing the forward; equal to projection_rate with SELF_DISCOUNTING.
     """
