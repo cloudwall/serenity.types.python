@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import List, Optional
 from uuid import UUID
 from pydantic import validator
 
@@ -191,13 +191,13 @@ class OptionValuationRequest(CamelModel):
     nor their own volatility surface, the system will load the default for the underlying as-of the as_of_time.
     """
 
-    discounting_curve_overrides: Optional[YieldCurveOverride]
+    discounting_curve_override: Optional[YieldCurveOverride]
     """
     Various forms of modifications to the discounting curve: choosing a variant in the database; passing
     in a complete curve by value; and/or replacing or shifting the extracted rate.
     """
 
-    projection_curve_overrides: Optional[YieldCurveOverride]
+    projection_curve_override: Optional[YieldCurveOverride]
     """
     Various forms of modifications to the projection curve: choosing a variant in the database; passing
     in a complete curve by value; and/or replacing or shifting the extracted rate.
@@ -270,9 +270,14 @@ class OptionValuationResult(CamelModel):
     Input forward price for this valuation.
     """
 
-    rates: Dict[UUID, float]
+    projection_rate: float
     """
-    Input interest rates, by asset ID.
+    The projection rate used when computing the forward.
+    """
+
+    discount_rate: float
+    """
+    The discounting rate used when computing the forward; equal to projection_rate with SELF_DISCOUNTING.
     """
 
     delta: float
