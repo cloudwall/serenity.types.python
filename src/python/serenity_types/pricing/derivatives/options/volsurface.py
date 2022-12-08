@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import Dict, List
 from uuid import UUID
 
 from serenity_types.utils.serialization import CamelModel
@@ -152,14 +152,9 @@ class VolPoint(CamelModel):
     The observed option premium used as input to the IV calculation.
     """
 
-    rates: Optional[Dict[str, float]]
-    """
-    The observed discounting rates that went into the IV calculations, if any.
-    """
-
     forward_price: float
     """
-    The observed or calculated forward price that went into the IV calculation.
+    The computed forward price that went into the IV calculation.
     """
 
     iv: float
@@ -177,6 +172,16 @@ class RawVolatilitySurface(CamelModel):
     spot_price: float
     """
     The observed spot price that went into the IV calculations.
+    """
+
+    projection_rate: float
+    """
+    The projection rate used when computing the forward.
+    """
+
+    discounting_rate: float
+    """
+    The discounting rate used when computing the forward; equal to projection_rate with SELF_DISCOUNTING.
     """
 
     vol_points: List[VolPoint]
