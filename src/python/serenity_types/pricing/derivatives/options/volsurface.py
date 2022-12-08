@@ -152,7 +152,7 @@ class VolPoint(CamelModel):
     The observed option premium used as input to the IV calculation.
     """
 
-    rates: Optional[Dict[UUID, float]]
+    rates: Optional[Dict[str, float]]
     """
     The observed discounting rates that went into the IV calculations, if any.
     """
