@@ -152,6 +152,17 @@ class VolPoint(CamelModel):
     The observed option premium used as input to the IV calculation.
     """
 
+    projection_rate: float
+    """
+    The projection rate used when computing the forward.
+    """
+
+    discounting_rate: float
+    """
+    The discounting rate used when computing the forward; equal to projection_rate with SELF_DISCOUNTING,
+    which is currently the default for our IV calculations.
+    """
+
     forward_price: float
     """
     The computed forward price that went into the IV calculation.
@@ -172,16 +183,6 @@ class RawVolatilitySurface(CamelModel):
     spot_price: float
     """
     The observed spot price that went into the IV calculations.
-    """
-
-    projection_rate: float
-    """
-    The projection rate used when computing the forward.
-    """
-
-    discounting_rate: float
-    """
-    The discounting rate used when computing the forward; equal to projection_rate with SELF_DISCOUNTING.
     """
 
     vol_points: List[VolPoint]
