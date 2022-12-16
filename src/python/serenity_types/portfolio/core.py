@@ -1,3 +1,4 @@
+from typing import List
 from uuid import UUID
 
 
@@ -17,4 +18,39 @@ class AssetPosition:
     """
     The number of tokens, shares, contracts, etc. held in this position.
     If positive this indicates a long position; if negative, a short one.
+    """
+
+
+class SimplePortfolio:
+    """
+    A simple portfolio representation that just maps the positions to
+    positive or negative quantities for long and short. There is no
+    history, detail on custody or any other context.
+    """
+
+    portfolio_id: UUID
+    """
+    Unique ID; in the initial implementation this is assigned locally in
+    a client installation-hosted database.
+    """
+
+    base_currency_id: UUID
+    """
+    Asset ID of the base currency for this portfolio.
+    """
+
+    portfolio_name: str
+    """
+    Descriptive name for this portfolio, for display only.
+    """
+
+    portfolio_manager: str
+    """
+    In the initial implementation, a text field for the PM;
+    eventually will link to user ID in the database.
+    """
+
+    positions: List[AssetPosition]
+    """
+    List of positions in the portfolio.
     """
