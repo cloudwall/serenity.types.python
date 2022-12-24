@@ -1,9 +1,60 @@
 from datetime import date
+from enum import Enum
 from typing import Optional
 from uuid import UUID
 
+import pytz
+
 from serenity_types.utils.serialization import CamelModel
-from serenity_types.valuation.core import CashTreatment, MarkTime
+
+
+class CashTreatment(Enum):
+    """
+    For purposes of cash positions, what counts as cash?
+    """
+    FIAT_ONLY = 'FIAT_ONLY'
+    """
+    Include only traditional currencies, e.g. USD or EUR.
+    """
+
+    FIAT_PEGGED_STABLECOINS = 'FIAT_PEGGED_STABLECOINS'
+    """
+    Include both fiat and fiat pegs, e.g. USD and USDT.
+    """
+
+
+class MarkTime(Enum):
+    """
+    For purposes of closing prices in a 24x7 market, which regional market closing should be used?
+    """
+
+    NY_EOD = 'NY_EOD'
+    """
+    Mark prices at 4:30PM America/New_York.
+    """
+
+    LN_EOD = 'LN_EOD'
+    """
+    Mark prices at 4:30PM Europe/London.
+    """
+
+    HK_EOD = 'HK_EOD'
+    """
+    Mark prices at 4:00PM Asia/Hong_Kong.
+    """
+
+    UTC = 'UTC'
+    """
+    Mark prices at UTC midnight.
+    """
+
+
+MARK_TIME_TZ = {
+    MarkTime.NY_EOD: pytz.timezone('America/New_York'),
+    MarkTime.LN_EOD: pytz.timezone('Europe/London'),
+    MarkTime.HK_EOD: pytz.timezone('Asia/Hong_Kong'),
+    MarkTime.UTC: pytz.utc
+}
 
 
 class PricingContext(CamelModel):

@@ -1,8 +1,10 @@
 from typing import List
 from uuid import UUID
 
+from serenity_types.utils.serialization import CamelModel
 
-class AssetPosition:
+
+class AssetPosition(CamelModel):
     """
     A simple representation of holding a certain amount of a given asset.
     This is going to be replaced with a much more flexible Portfolio
@@ -21,7 +23,7 @@ class AssetPosition:
     """
 
 
-class SimplePortfolio:
+class SimplePortfolio(CamelModel):
     """
     A simple portfolio representation that just maps the positions to
     positive or negative quantities for long and short. There is no
