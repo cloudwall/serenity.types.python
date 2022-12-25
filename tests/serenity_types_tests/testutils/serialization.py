@@ -6,6 +6,7 @@ from uuid import UUID
 
 from faker import Faker
 from pydantic import BaseModel
+from typing_inspect import get_args, get_origin, is_optional_type, is_union_type
 
 
 class BaseModelFaker:
@@ -33,20 +34,16 @@ class BaseModelFaker:
         init_data = {}
         for field_name, field_schema in model_class.__fields__.items():
             field_type = field_schema.outer_type_
-            inner_type = field_schema.type_
+            if is_optional_type(field_type):
+                # for Optional[T], pick the lead type (not NoneType)
+                field_type = get_args(field_type)[0]
+            elif is_union_type(field_type):
+                # for Unions, pick one type at random
+                field_type = self._pick_from_list(get_args(field_type))
 
-            # hacky way to recognize that we are dealing with a Union type
-            if hasattr(field_type, '__origin__'):
-                if not isinstance(field_type.__origin__, Type):
-                    field_type = self._pick_from_list(list(field_type.__args__))
-                else:
-                    field_type = field_type.__origin__
+            field_faker = self._get_type_faker(field_type)
+            init_data[field_name] = field_faker()
 
-            field_faker = self._get_type_faker(field_type, inner_type)
-            if field_faker:
-                init_data[field_name] = field_faker()
-            else:
-                raise ValueError(f'Unhandled field_type: {field_type}')
         return model_class(**init_data)
 
     def faker(self):
@@ -55,20 +52,30 @@ class BaseModelFaker:
     def enum_faker(self, clazz: Type[Enum]):
         return self._pick_from_list(list(clazz))
 
-    def list_faker(self, clazz: Type[List], inner_type: Type):
+    def list_faker(self, elem_type: Type):
         num_elems = self.faker.pyint(min_value=1, max_value=5)
-        fake_list = [self._get_type_faker(inner_type)() for _ in range(num_elems)]
+        fake_list = [self._get_type_faker(elem_type)() for _ in range(num_elems)]
         return fake_list
 
-    def _get_type_faker(self, clazz: Type, inner_type: Type = None):
+    def dict_faker(self, key_type: Type, value_type: Type):
+        num_elems = self.faker.pyint(min_value=1, max_value=5)
+        fake_dict = {self._get_type_faker(key_type)(): self._get_type_faker(value_type)() for _ in range(num_elems)}
+        return fake_dict
+
+    def _get_type_faker(self, clazz: Type):
         default_field_faker = self._fakers_by_type.get(clazz, None)
+        origin_type = get_origin(clazz)
         field_faker = self.custom_field_fakers.get(clazz, default_field_faker)
         if field_faker:
             return field_faker
+        elif origin_type and issubclass(origin_type, List):
+            args = get_args(clazz)
+            return partial(self.list_faker, elem_type=args[0])
+        elif origin_type and issubclass(origin_type, Dict):
+            args = get_args(clazz)
+            return partial(self.dict_faker, key_type=args[0], value_type=args[1])
         elif issubclass(clazz, Enum):
             return partial(self.enum_faker, clazz=clazz)
-        elif issubclass(clazz, List):
-            return partial(self.list_faker, clazz=clazz, inner_type=inner_type)
         elif issubclass(clazz, BaseModel):
             return partial(self.create_fake_model, model_class=clazz)
         else:
@@ -77,3 +84,19 @@ class BaseModelFaker:
     def _pick_from_list(self, values: List):
         index = self.faker.pyint(min_value=0, max_value=len(values) - 1)
         return values[index]
+
+
+faker = BaseModelFaker()
+
+
+def roundtrip(clazz: Type):
+    """
+    Boilerplate test that just roundtrips and object to
+    JSON and back to ensure test coverage of all classes
+    and validations. Not a substitute for specific tests
+    of edge cases for validators.
+    """
+    obj = faker.create_fake_model(clazz)
+    raw_json = obj.json()
+    obj_out = clazz.parse_raw(raw_json)
+    assert obj == obj_out
