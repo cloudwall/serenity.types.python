@@ -2,6 +2,8 @@ from datetime import date
 from typing import Dict
 from uuid import UUID
 
+from pydantic import Json
+
 from serenity_types.utils.serialization import CamelModel
 
 
@@ -115,12 +117,12 @@ class ModelConfiguration(CamelModel):
     A GitHub commit ID, tag or other means to uniquely identify the code.
     """
 
-    data_parameters: Dict[str, object]
+    data_parameters: Dict[str, Json]
     """
     A set of name-value pairs characterizing input data.
     """
 
-    model_parameters: Dict[str, object]
+    model_parameters: Dict[str, Json]
     """
     A set of name-value pairs parameterizing the model.
     """

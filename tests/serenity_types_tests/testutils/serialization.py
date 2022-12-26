@@ -1,11 +1,12 @@
-from datetime import date, datetime
+from datetime import date, datetime, time
 from enum import Enum
 from functools import partial
-from typing import Dict, List, Type
+from json import dumps
+from typing import Callable, Dict, List, Type
 from uuid import UUID
 
 from faker import Faker
-from pydantic import BaseModel
+from pydantic import BaseModel, Json
 from typing_inspect import get_args, get_origin, is_optional_type, is_union_type
 
 
@@ -17,17 +18,23 @@ class BaseModelFaker:
     Please do not consider this class to be an endorsement of reflection
     as a programming practice: caveat hackor.
     """
-    def __init__(self, custom_field_fakers: Dict[Type, object] = {}):
+    def __init__(self, custom_field_fakers: Dict[Type, object] = {},
+                 pre_create_hook: Callable[[Dict], Dict] = None):
         self.custom_field_fakers = custom_field_fakers
+        self.pre_create_hook = pre_create_hook
+
         self.faker = Faker()
         self._fakers_by_type = {
             bool: self.faker.pybool,
             date: self.faker.date,
             datetime: self.faker.date_time,
+            time: self.faker.time,
             str: self.faker.pystr,
             int: self.faker.random_int,
             float: self.faker.pyfloat,
-            UUID: self.faker.uuid4,
+            Json: self.json_data_faker,
+            object: self.json_data_faker,
+            UUID: self.faker.uuid4
         }
 
     def create_fake_model(self, model_class: Type[BaseModel]):
@@ -44,6 +51,8 @@ class BaseModelFaker:
             field_faker = self._get_type_faker(field_type)
             init_data[field_name] = field_faker()
 
+        if self.pre_create_hook:
+            init_data = self.pre_create_hook(init_data)
         return model_class(**init_data)
 
     def faker(self):
@@ -61,6 +70,13 @@ class BaseModelFaker:
         num_elems = self.faker.pyint(min_value=1, max_value=5)
         fake_dict = {self._get_type_faker(key_type)(): self._get_type_faker(value_type)() for _ in range(num_elems)}
         return fake_dict
+
+    def json_data_faker(self):
+        num_elems = self.faker.pyint(min_value=1, max_value=5)
+        keys = [self.faker.pystr() for _ in range(num_elems)]
+        values = [self.faker.name() for _ in range(num_elems)]
+        fake_dict = dict(zip(keys, values))
+        return dumps(fake_dict)
 
     def _get_type_faker(self, clazz: Type):
         default_field_faker = self._fakers_by_type.get(clazz, None)
