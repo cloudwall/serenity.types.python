@@ -135,9 +135,9 @@ class PortfolioValuationResponse(CamelModel):
     data that will be connected in Q1'23.
     """
 
-    positions: Dict[UUID, PositionValue]
+    positions: Dict[str, PositionValue]
     """
-    The values of each of the individual positions in the portfolio.
+    The values of each of the individual positions in the portfolio keyed by asset UUID.
     """
 
     warnings: Optional[List[str]]
