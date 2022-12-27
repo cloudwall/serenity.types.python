@@ -1,6 +1,4 @@
-from datetime import date
-from typing import Dict, List, Optional
-from uuid import UUID
+from typing import Dict, List
 
 from serenity_types.portfolio.core import AssetPosition
 from serenity_types.pricing.core import PricingContext
@@ -104,16 +102,6 @@ class PortfolioValuationResponse(CamelModel):
     Response with the value of the portfolio at top level plus all position values.
     """
 
-    request_id: UUID
-    """
-    The original request ID sent in. DEPRECATED, will move to higher level.
-    """
-
-    as_of_date: date
-    """
-    The close date on which the portfolio was valued. DEPRECATED, duplicate field.
-    """
-
     pricing_context: PricingContext
     """
     The context that was used to value this portfolio. DEPRECATED, not needed.
@@ -129,18 +117,7 @@ class PortfolioValuationResponse(CamelModel):
     The value of the whole portfolio as of the previous close date.
     """
 
-    current: PortfolioValue
-    """
-    The value of the whole portfolio as of the current moment. Requires real-time
-    data that will be connected in Q1'23.
-    """
-
     positions: Dict[str, PositionValue]
     """
     The values of each of the individual positions in the portfolio keyed by asset UUID.
-    """
-
-    warnings: Optional[List[str]]
-    """
-    An optional list of warnings, e.g. regarding missing price data.
     """
