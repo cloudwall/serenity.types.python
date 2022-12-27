@@ -336,3 +336,42 @@ class TotalRisk(CamelModel):
     """
     Factor, specific and total variance of the portfolio.
     """
+
+
+class RiskAttributionResponse(CamelModel):
+    """
+    Consolidated response for a single risk attribution run using a factor risk model.
+    """
+
+    total_risk: TotalRisk
+    """
+    Portfolio risk in volatility and variance terms; volatility is non-additive, so factor and specific
+    volatility do not sum to total volatility, but variance does.
+    """
+
+    absolute_contribution_risk: RiskBreakdown
+    """
+    Sector and asset absolute contribution to the volatility of the portfolio; cross-check sums by asset to equal
+    total factor, specific and total volatility for all assets.
+    """
+
+    relative_contribution_risk: RiskBreakdown
+    """
+    Sector and asset relative contribution to the variance of the portfolio; cross-check sums by asset to equal
+    total factor and specific variance divided by total variance.
+    """
+
+    asset_marginal_risk: List[AssetRisk]
+    """
+    By-asset marginal weighted contribution of volatility to the portfolio.
+    """
+
+    factorRisk: List[TotalFactorRisk]
+    """
+    By-factor absolute, relative and marginal contribution to risk, as well as the portfolio’s exposure to each factor.
+    """
+
+    sectorFactorExposures: List[SectorFactorExposure]
+    """
+    Aggregations of factor exposure by factor and sector.
+    """

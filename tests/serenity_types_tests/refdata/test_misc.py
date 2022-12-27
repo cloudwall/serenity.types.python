@@ -1,3 +1,4 @@
+from serenity_types.refdata.asset import AssetSummary
 from serenity_types.refdata.currency import Currency
 from serenity_types.refdata.exposure import Exposure
 from serenity_types.refdata.futures import Future
@@ -10,6 +11,7 @@ from serenity_types_tests.testutils.serialization import roundtrip
 
 
 def test_roundtrip_asset_objects():
+    roundtrip(AssetSummary)
     roundtrip(Currency)
     roundtrip(Future)
     roundtrip(ListedOption)
