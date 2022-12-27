@@ -47,6 +47,18 @@ class ListedOption(CamelModel):
     settlement_type: SettlementType
 
 
+class Perpetual(CamelModel):
+    """
+    Legacy perpetuals reference data; use serenity_types.refdata.futures.Perpetual instead.
+    """
+
+    asset_id: UUID
+    listed_pn: UUID
+    underlier_asset_id: UUID
+    settlement_asset_id: UUID
+    settlement_type: SettlementType
+
+
 class ReferenceRate(CamelModel):
     """
     Legacy reference index reference data; use serenity_types.refdata.index.ReferenceIndex instead.
