@@ -4,7 +4,7 @@ from uuid import UUID
 from serenity_types.utils.serialization import CamelModel
 
 
-class AssetSectorMappings(CamelModel):
+class AssetSectorMapping(CamelModel):
     """
     A single entry in a particular sectory taxonomy mapping a single asset to a sector path.
     """

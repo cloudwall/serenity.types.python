@@ -1,10 +1,28 @@
 from datetime import date
+from enum import Enum
 from typing import Dict
 from uuid import UUID
 
 from pydantic import Json
 
 from serenity_types.utils.serialization import CamelModel
+
+
+class ModelStatus(Enum):
+    RECOMMENDED = 'RECOMMENDED'
+    """
+    Production-grade and recommended for use.
+    """
+
+    EXPERIMENTAL = 'EXPERIMENTAL'
+    """
+    Current experiment which may be promoted in a coming release; for testing only.
+    """
+
+    DEPRECATED = 'DEPRECATED'
+    """
+    No longer supported model kept in database for historical use only.
+    """
 
 
 class Model(CamelModel):
@@ -82,6 +100,11 @@ class ModelConfiguration(CamelModel):
     Unique ID for the parent Model.
     """
 
+    model_status: ModelStatus
+    """
+    Current status of this model, e.g. RECOMMENDED or EXPERIMENTAL.
+    """
+
     short_name: str
     """
     A structured name suitable for lookup keys, like risk.var.parametric.normal.
@@ -141,6 +164,11 @@ class ModelConfigurationSummary(CamelModel):
     model_id: UUID
     """
     Unique ID for the parent Model.
+    """
+
+    model_status: ModelStatus
+    """
+    Current status of this model, e.g. RECOMMENDED or EXPERIMENTAL.
     """
 
     short_name: str

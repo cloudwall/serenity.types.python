@@ -4,7 +4,7 @@ from serenity_types.refdata.exposure import Exposure
 from serenity_types.refdata.futures import Future
 from serenity_types.refdata.index import ReferenceIndex
 from serenity_types.refdata.options import ListedOption
-from serenity_types.refdata.sector import AssetSectorMappings, SectorTaxonomy
+from serenity_types.refdata.sector import AssetSectorMapping, SectorTaxonomy
 from serenity_types.refdata.symbology import SymbolAuthority, XRefSymbol
 from serenity_types.refdata.token import TokenAsset, WrappedTokenAsset
 from serenity_types_tests.testutils.serialization import roundtrip
@@ -25,7 +25,7 @@ def test_roundtrip_exposure_objects():
 
 
 def test_roundtrip_sector_objects():
-    roundtrip(AssetSectorMappings)
+    roundtrip(AssetSectorMapping)
     roundtrip(SectorTaxonomy)
 
 

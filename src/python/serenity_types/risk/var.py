@@ -77,7 +77,7 @@ class VaRQuantile(CamelModel):
     """
 
 
-class VaRResult(CamelModel):
+class VaRAnalysisResult(CamelModel):
     """
     The analysis result for a single day returns the baseline value and the various confidence
     interval values around that baseline.
@@ -101,22 +101,6 @@ class VaRResult(CamelModel):
     excluded_asset_ids: List[UUID]
     """
     Assets excluded from VaR calculation due to insufficient history.
-    """
-
-
-class VaRAnalysisResult(CamelModel):
-    """
-    The result of computing VaR on a single portfolio on a single date.
-    """
-
-    result: VaRAnalysisRequest
-    """
-    A single day's result.
-    """
-
-    warnings: List[str]
-    """
-    Any warnings in the analysis to report to the client.
     """
 
 
@@ -198,7 +182,7 @@ class VaRBacktestResult(CamelModel):
     The result of a full VaR backtest of a portfolio.
     """
 
-    results: List[VaRResult]
+    results: List[VaRAnalysisResult]
     """
     VaR computed results for every day in the backtest.
     """
@@ -206,9 +190,4 @@ class VaRBacktestResult(CamelModel):
     breaches: List[VaRBreach]
     """
     Days when the portfolio loss exceeded the VaR forecasted level in a backtest.
-    """
-
-    warnings: List[str]
-    """
-    Any warnings in the backtest to report to the client.
     """
