@@ -37,7 +37,7 @@ class ListedOption(CamelModel):
     """
 
     asset_id: UUID
-    listed_pn: UUID
+    listed_on: UUID
     underlier_asset_id: UUID
     option_type: OptionType
     option_style: OptionStyle
@@ -53,7 +53,7 @@ class Perpetual(CamelModel):
     """
 
     asset_id: UUID
-    listed_pn: UUID
+    listed_on: UUID
     underlier_asset_id: UUID
     settlement_asset_id: UUID
     settlement_type: SettlementType
