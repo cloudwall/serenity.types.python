@@ -1,7 +1,8 @@
 from enum import Enum
-from typing import Optional
+from typing import List, Optional
 from uuid import UUID
 
+from serenity_types.refdata.symbology import SymbolAuthority
 from serenity_types.utils.serialization import CamelModel
 
 
@@ -87,4 +88,58 @@ class Asset(CamelModel):
     display_name: str
     """
     Human-readable name for this asset.
+    """
+
+
+class XRefSymbol(CamelModel):
+    """
+    Legacy representation of a cross-reference symbol for an AssetSummary.
+    """
+
+    authority: SymbolAuthority
+    """
+    Symbology for which this symbol is authoritative, e.g. COINGECKO or SEDOL.
+    """
+
+    symbol: str
+    """
+    String symbol in the given symbology as of the effective date loaded.
+    Note the vendor symbols can and do change over time, so this should
+    be mapped to a Serenity asset ID using inputs from the same day.
+    """
+
+
+class AssetSummary(CamelModel):
+    """
+    Flattened, lowest common denominator representation of assets. This is to
+    support the legacy Refdata API, which only handled TOKEN and CURRENCY.
+    We will be replacing this with a richer mechanism going forward.
+    """
+    asset_id: UUID
+    """
+    Serenity's unique internal identifier for this asset. This never changes.
+    """
+
+    asset_type: AssetType
+    """
+    Serenity's classification for this asset, e.g. TOKEN or CURRENCY.
+    """
+
+    asset_symbol: str
+    """
+    Serenity's human-readable symbol for this asset. This identifier may change.
+    """
+
+    native_symbol: str
+    """
+    The blockchain, listing exchange or other primary authority's symbol, e.g. BTC.
+    """
+
+    display_name: str
+    """
+    Serenity's human-readable display name for this asset, e.g. Bitcoin.
+    """
+
+    xref_symbols: List[XRefSymbol]
+    """
     """
