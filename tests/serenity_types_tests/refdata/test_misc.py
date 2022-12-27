@@ -1,3 +1,5 @@
+import serenity_types.refdata.legacy as legacy
+
 from serenity_types.refdata.asset import AssetSummary
 from serenity_types.refdata.currency import Currency
 from serenity_types.refdata.exposure import Exposure
@@ -32,3 +34,14 @@ def test_roundtrip_sector_objects():
 def test_roundtrip_symbology_objects():
     roundtrip(SymbolAuthority)
     roundtrip(XRefSymbol)
+
+
+def test_roundtrip_legacy_objects():
+    roundtrip(legacy.Currency)
+    roundtrip(legacy.Future)
+    roundtrip(legacy.Index)
+    roundtrip(legacy.ListedOption)
+    roundtrip(legacy.Perpetual)
+    roundtrip(legacy.ReferenceRate)
+    roundtrip(legacy.Token)
+    roundtrip(legacy.TokenAsset)
