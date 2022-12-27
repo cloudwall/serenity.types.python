@@ -79,7 +79,6 @@ class FactorPnL(CamelModel):
     """
     A single entry representing a factor-level impact of this scenario's shocks.
     """
-    pass
 
     factor: str
     """
@@ -199,7 +198,7 @@ class ScenarioDefinition(CamelModel):
     Last update timestamp, in UTC.
     """
 
-    last_updated_by: Optional[str]
+    last_updated_by: str
     """
     Last update user.
     """
@@ -267,6 +266,11 @@ class ScenarioRequest(CamelModel):
     End of the shock period; in the instantaneous case, same as start_date.
     """
 
+    schema_version: int
+    """
+    Version number for the scenario schema.
+    """
+
 
 class ScenarioResult(CamelModel):
     """
@@ -286,6 +290,31 @@ class ScenarioResult(CamelModel):
     factor_pnl: List[FactorPnL]
     """
     Report on P&L impact by risk factor in the provided factor risk model.
+    """
+
+    start_date: date
+    """
+    Start of the shock period; in the instantaneous case, same as end_date.
+    """
+
+    end_date: date
+    """
+    End of the shock period; in the instantaneous case, same as start_date.
+    """
+
+    scenario_run_id: UUID
+    """
+    The run that this result is associated with.
+    """
+
+    warnings: List[str]
+    """
+    Any warnings generated at the time of the run.
+    """
+
+    schema_version: int
+    """
+    Version number for the scenario schema.
     """
 
 
