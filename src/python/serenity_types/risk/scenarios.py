@@ -146,7 +146,7 @@ class Shock(CamelModel):
     What to shock: asset returns or factor returns?
     """
 
-    target: Union[UUID, str]
+    shock_target: Union[UUID, str]
     """
     UUID for asset ID, or name of the factor to shock.
     """
