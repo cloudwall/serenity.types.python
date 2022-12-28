@@ -52,7 +52,7 @@ class SimplePortfolio(CamelModel):
     eventually will link to user ID in the database.
     """
 
-    positions: List[AssetPosition]
+    asset_positions: List[AssetPosition]
     """
     List of positions in the portfolio.
     """
