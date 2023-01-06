@@ -287,7 +287,7 @@ class ScenarioResult(CamelModel):
     Report on P&L impact by asset & sector.
     """
 
-    factor_pnl: List[FactorPnL]
+    factor_pnl: Optional[List[FactorPnL]]
     """
     Report on P&L impact by risk factor in the provided factor risk model.
     """
