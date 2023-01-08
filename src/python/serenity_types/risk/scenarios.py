@@ -256,17 +256,17 @@ class ScenarioRequest(CamelModel):
     Factor model configuration ID to use for risk purposes.
     """
 
-    start_date: date
+    start_date: Optional[date]
     """
     Start of the shock period; in the instantaneous case, same as end_date.
     """
 
-    end_date: date
+    end_date: Optional[date]
     """
     End of the shock period; in the instantaneous case, same as start_date.
     """
 
-    schema_version: int
+    schema_version: Optional[int]
     """
     Version number for the scenario schema.
     """
