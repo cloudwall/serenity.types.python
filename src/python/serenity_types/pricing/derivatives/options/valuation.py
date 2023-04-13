@@ -341,7 +341,7 @@ class OptionValuationResult(CamelModel):
 
 class StrategyValuationResult(CamelModel):
     """
-    The result of a strategy valuation summary and its compositions legs results, 
+    The result of a strategy valuation summary and its compositions legs results,
     based on the parameters in the OptionValuationRequest.
     Note that the basic calculation is just Black-Scholes, but if you provide additional information
     regarding the position scaling it will also provide position notional and greek exposures
@@ -352,43 +352,43 @@ class StrategyValuationResult(CamelModel):
     """
     Sum of leg-level pv's
     """
-    
+
     notional_value: float
     """
     Sum of leg-level notional_value's
     """
-    
+
     delta_qty: float
     """
     Sum of leg-level delta_qty's
     """
-    
+
     delta_ccy: float
     """
     Sum of leg-level delta_ccy's
     """
-    
+
     gamma_ccy: float
     """
     Sum of leg-level gamma_ccy's
     """
-    
+
     vega_ccy: float
     """Sum of leg-level vega_ccy's, ignoring leg-
     level differences in expiries and strikes
     """
-    
+
     rho_ccy: float
     """
-    Sum of leg-level rho_ccy's, 
+    Sum of leg-level rho_ccy's,
     ignoring leg-level differences in expiries
     """
-    
+
     theta_ccy: float
     """
     Sum of leg-level theta_ccy's
     """
-    
+
     leg_results: List[OptionValuationResult]
     """
     leg-level results, see `OptionValuationResult` for more details.
